@@ -1,0 +1,9 @@
+{
+  "name": "codiemind-verifier-bridge",
+  "private": true,
+  "description": "Stage 4 verifier bridge: TypeScript compiler API + tsquery. Pinned exact versions, copied from Stage 2 code/tsq.",
+  "dependencies": {
+    "typescript": "5.9.3",
+    "@phenomnomnominal/tsquery": "6.1.3"
+  }
+}

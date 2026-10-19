@@ -1,0 +1,123 @@
+{
+  "rule_id": "R72_34",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A function body with a block: the source lines strictly between the opening '{' and closing '}' of any function declaration, function expression, generator, arrow function with a block body, class method, constructor, getter/setter, or object method. Concise-body arrow functions with no braces and empty bodies contribute no interior lines but still count as instances.",
+  "interpretation": "The rule forbids empty (whitespace-only) source lines inside a function body. A unit is VIOLATED if any function body (including nested functions/callbacks, and including lines inside nested blocks or object literals within the body) contains a whitespace-only line of source layout. Blank lines between top-level statements, between class members, inside interfaces, type declarations, or top-level object literals are outside any function and are allowed. Comment lines are not blank. Newlines that are part of a string or template-literal value are string content, not source layout, so an empty line inside a multi-line template literal does not violate the rule. A file with no functions at all is NOT_APPLICABLE; a file with at least one function and no blank lines inside any function body is SATISFIED.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bfunction\\b|=>)[^{;]*\\{(?:[^{}]|\\{[^{}]*\\})*\\n[ \\t]*\\n",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "ho_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bfunction\\b|=>)[^{;]*\\{(?:[^{}]|\\{[^{}]*\\})*\\n[ \\t]*\\n",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\{[^{}]*\\n[ \\t]*\\n[^{}]*\\}",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

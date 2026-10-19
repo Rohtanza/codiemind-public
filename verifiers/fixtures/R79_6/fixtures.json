@@ -1,0 +1,123 @@
+{
+  "rule_id": "R79_6",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A TypeScript interface declaration (InterfaceDeclaration node: `interface Name {...}`, with or without export/default/declare modifiers, at top level or nested in a namespace or ambient module). Each declared interface name is one instance. Type aliases, classes, and text inside strings, template literals or comments are not instances.",
+  "interpretation": "The rule requires every interface name to be 'I' followed by a PascalCase name: a capital I, then an uppercase letter, then only letters and digits (regex on the name: ^I[A-Z][A-Za-z0-9]*$). Conforming: IUserService, IRepository, IButtonProps. Violating: names without the I prefix (UserService, Response, OrderRepository), a lowercase prefix (iLogger), I followed by a lowercase letter (IapiResponse, which is not PascalCase after the prefix), and names containing underscores (IPayment_gateway). Generic parameters are not part of the name. Interface declarations nested in namespaces or declare-module blocks count. A file with no interface declarations (only type aliases or classes, even if named like interfaces) is NOT_APPLICABLE. Interface-like text produced inside string or template literals is code generation output, not a declaration, and is ignored.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inap_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inap_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^[ \\t]*(?:export\\s+)?(?:default\\s+)?(?:declare\\s+)?interface\\s+(?!I[A-Z][A-Za-z0-9]*\\b)[A-Za-z_$][\\w$]*",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^[ \\t]*(?:export\\s+)?(?:default\\s+)?(?:declare\\s+)?interface\\s+(?!I[A-Z][A-Za-z0-9]*\\b)[A-Za-z_$][\\w$]*",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "interface\\s+(?!I[A-Z])[A-Za-z]\\w*",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

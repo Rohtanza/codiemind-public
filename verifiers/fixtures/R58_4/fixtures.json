@@ -1,0 +1,22 @@
+{
+  "rule_id": "R58_4",
+  "target": "ts",
+  "tier": "T1",
+  "governed_construct": "One occurrence, anywhere in the source text (identifier, comment, string or template literal, JSX text), of an English word that has distinct UK and US spellings, e.g. colour/color, behaviour/behavior, organisation/organization, favourite/favorite, centre/center, -ise/-isation vs -ize/-ization verbs (initialise, normalise, serialise, analyse/analyze). Words are found as segments: identifiers are split on camelCase/PascalCase humps, underscores and digits, and matching is case-insensitive, so `highlightColorHex`, `MAX_COLOR_DEPTH` and `analyzeScores` each contain an instance.",
+  "interpretation": "The rule is a property of the text, so every occurrence counts regardless of whether it sits in code, a comment or a string literal. A unit is SATISFIED when it contains at least one variant word and every one is in the UK form; VIOLATED when any variant word is in the US form (one US occurrence among many UK ones is enough); NOT_APPLICABLE when it contains no word that has a UK/US spelling difference. Matching is on whole word segments, not raw substrings: words that merely contain the letters of a variant but are spelled identically in both varieties (e.g. the place name 'Colorado', 'honorific', 'decorator') are not instances and must not be flagged. US forms hidden inside camelCase or SCREAMING_SNAKE_CASE identifiers, where a naive \\bcolor\\b regex has no word boundary, must be caught. The rule as written makes no exception for platform API names that only exist in US spelling (such as the CSS `color` property); the fixtures deliberately avoid such names, so no verdict here depends on that edge.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.js", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.js", "expected": "VIOLATED"},
+    {"id": "inapplicable_01", "set": "dev", "kind": "inapplicable", "file": "dev/inapplicable_01.ts", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.ts", "expected": "VIOLATED"},
+    {"id": "ho_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "ho_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "ho_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.tsx", "expected": "VIOLATED"},
+    {"id": "ho_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.js", "expected": "VIOLATED"},
+    {"id": "ho_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.ts", "expected": "SATISFIED"}
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "rule_id": "R74_228",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A JSX element that renders an image: either an intrinsic <img> element, or a component element (any name) whose tag identifier is bound to an imported image component (the default export of 'next/image' or an image component from another library).",
+  "interpretation": "The rule asks that images be rendered through Next.js's optimized Image component. Each JSX image element in a file is one instance. An instance conforms if its tag identifier resolves to the default import of the module 'next/image', under any local name (Image, NextImage, Img). An instance violates if it is an intrinsic <img> element (including one inside <picture>), or a component whose binding resolves to a different image component (e.g. react-bootstrap/Image, antd's Image), even when it is named Image. A file with no image-rendering JSX elements is NOT_APPLICABLE. The tag name alone is insufficient: 'Image' may be bound to a non-Next library and next/image may be aliased, so deciding conformance requires resolving the binding of the tag identifier to its import declaration.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.tsx",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.tsx",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "JsxOpeningElement[tagName.name=\"img\"], JsxSelfClosingElement[tagName.name=\"img\"]",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.jsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.jsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.tsx",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "JsxOpeningElement[tagName.name=\"img\"], JsxSelfClosingElement[tagName.name=\"img\"]",
+        "match_means": "VIOLATED"
+      }
+    }
+  ]
+}

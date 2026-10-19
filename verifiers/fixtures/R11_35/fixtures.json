@@ -1,0 +1,22 @@
+{
+  "rule_id": "R11_35", "target": "ts", "tier": "T3",
+  "governed_construct": "A test definition in a source file: a call to a test-framework entry point (test / it / describe / test.describe, etc.) together with the binding that provides it. Each such test-framework binding (imported, required, or ambient global) is one instance.",
+  "interpretation": "The rule 'Use playwright for testing' governs code that defines tests. A file is SATISFIED when it contains tests and every test-framework entry point it uses (test, it, describe, expect, hooks) is bound to a Playwright package (@playwright/test or a @playwright/* test package such as @playwright/experimental-ct-react), whether via ESM import, aliased import (test as base, then base.extend) or CommonJS require. It is VIOLATED when any test is defined through another framework: Jest, Vitest, Mocha/Chai, node:test, Cypress, Jasmine, etc., including when the entry points are unimported ambient globals (describe/it/test/expect resolved to @types/jest or vitest/globals rather than Playwright, since Playwright exposes no globals), and including a file that mixes Playwright with another runner. Using puppeteer for browser automation inside a non-Playwright runner is a violation. A file that defines no tests (plain library code) is NOT_APPLICABLE. Deciding which framework an identifier like `test` or `describe` is bound to requires binding/import resolution, hence T3.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.js", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.js", "expected": "VIOLATED"},
+    {"id": "na_01", "set": "dev", "kind": "inapplicable", "file": "dev/na_01.ts", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.ts", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "ImportDeclaration > StringLiteral[text=/^(@jest.globals|jest|vitest|mocha|chai|cypress|jasmine|ava|node:test)$/]", "match_means": "VIOLATED"}},
+    {"id": "h_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "h_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.tsx", "expected": "SATISFIED"},
+    {"id": "h_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "h_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "h_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.ts", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "ImportDeclaration > StringLiteral[text=/^(@jest.globals|jest|vitest|mocha|chai|cypress|jasmine|ava|node:test)$/]", "match_means": "VIOLATED"}}
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "rule_id": "R44_53",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "One JSX element whose tag is bound to a client-loaded component: an identifier (or member) whose binding is the result of React's lazy() (imported from 'react' under any name, or React.lazy via a default/namespace import of 'react') or of the default export of 'next/dynamic' (under any local name).",
+  "interpretation": "A 'client component' is read, within one file, as a component created with React lazy() or next/dynamic, since these are the components that load on the client and suspend. Each JSX element rendering such a component is an instance. It conforms when its nearest enclosing boundary element is React's Suspense, resolved by binding (named import of Suspense from 'react' under any alias, or React.Suspense on a default/namespace import of 'react'), and that Suspense has a fallback attribute whose value is not the literal null or undefined. An instance with no enclosing React Suspense, whose nearest React Suspense has no fallback or fallback={null}/{undefined}, or whose wrapper merely is named Suspense but is bound to something else (a local function, another module) is VIOLATED. Wrapping can be indirect (inside divs, conditionals, map callbacks within the Suspense subtree). Suspense wrapping ordinary components or children while no lazy/dynamic component is rendered is NOT_APPLICABLE.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inapp_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inapp_01.tsx",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "JsxOpeningElement:has(Identifier[name=\"Suspense\"]):has(JsxAttribute Identifier[name=\"fallback\"])",
+        "match_means": "SATISFIED"
+      }
+    },
+    {
+      "id": "hpos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "hpos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "hneg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "hneg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "hadv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.tsx",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "JsxOpeningElement:has(Identifier[name=\"Suspense\"]):has(JsxAttribute Identifier[name=\"fallback\"])",
+        "match_means": "SATISFIED"
+      }
+    }
+  ]
+}

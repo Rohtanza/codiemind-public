@@ -1,0 +1,123 @@
+{
+  "rule_id": "R32_391",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A function or method named `validate` (class method, class property initialised with an arrow/function expression, object-literal method or property, or function declaration/expression bound to `validate`). Each such definition is one instance.",
+  "interpretation": "The rule constrains the body of a token `validate` routine: it must not read the JWT expiration claim, because expiry is enforced by the Redis key TTL (an expired token's entry is simply absent). An instance VIOLATES the rule if, anywhere in its body (including nested callbacks), it reads a property named `exp` (case-insensitive, so `EXP` too) from any object: member access `x.exp` / `x?.exp`, element access with a string literal `x['exp']`, or an object destructuring pattern that binds the `exp` key. The receiver need not be literally named `claims` (`payload`, `decoded` count) since the rule targets the claim, not the variable name. An instance SATISFIES the rule if its body has no such read; looking the token up in Redis/a session store is the expected conforming behaviour. Reads or writes of `exp` outside any `validate` function (e.g. in `sign`, `store`, or a TTL-computation helper) are not governed and do not affect the verdict; mentions in comments or string literals never count. A file with no `validate` function is NOT_APPLICABLE even if it handles `exp` elsewhere. Type annotations declaring an `exp` field are not reads.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inapp_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inapp_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?i)(\\.\\s*exp\\b|\\[\\s*['\"]exp['\"]\\s*\\]|\\{[^}]*\\bexp\\b[^}]*\\}\\s*=)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?i)(\\.\\s*exp\\b|\\[\\s*['\"]exp['\"]\\s*\\]|\\{[^}]*\\bexp\\b[^}]*\\}\\s*=)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "claims\\.EXP",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

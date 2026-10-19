@@ -1,0 +1,123 @@
+{
+  "rule_id": "R43_155",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A catch clause (CatchClause node) of a try statement, i.e. try { ... } catch ... { ... }. Each catch clause in the file is one instance. Promise .catch(...) method calls and try/finally without a catch clause are not instances.",
+  "interpretation": "The rule asks that error handling via try-catch use a typed catch clause: the catch clause must declare a binding and that binding must carry an explicit type annotation (in TypeScript the only legal annotations are `unknown` and `any`; `unknown` is the idiomatic form, and any explicit annotation counts as conforming). A catch clause whose binding has no type annotation (`catch (err)`), an optional catch binding with no parameter at all (`catch { ... }`), and an unannotated destructuring binding (`catch ({ message })`) all violate. A file is SATISFIED when it has at least one catch clause and every catch clause is typed, VIOLATED when any catch clause is untyped (including nested ones), and NOT_APPLICABLE when it contains no catch clause. Mentions of catch in comments or strings, and Promise.prototype.catch calls, are not instances.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\bcatch\\s*(?:\\(\\s*[A-Za-z_$][\\w$]*\\s*\\)|\\{)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\bcatch\\s*(?:\\(\\s*[A-Za-z_$][\\w$]*\\s*\\)|\\{)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "catch\\s*\\(\\s*\\w+\\s*\\)",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

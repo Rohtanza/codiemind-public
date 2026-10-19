@@ -1,0 +1,24 @@
+{
+  "rule_id": "R25_123",
+  "target": "py",
+  "tier": "T2",
+  "governed_construct": "A function definition (`def` or `async def`, at any nesting level: module-level, method, nested function). Lambdas are not instances, since Python syntax cannot annotate them.",
+  "interpretation": "Every function definition in the file must have a return annotation (`-> T`) and an annotation on every parameter: positional-only, regular, keyword-only, `*args` and `**kwargs`. The single exemption is the implicit receiver: the first parameter of a function defined directly in a class body (conventionally `self` or `cls`) need not be annotated, unless the function is decorated with `@staticmethod`, in which case its first parameter is an ordinary parameter and must be annotated. `__init__` and other methods returning nothing still need `-> None`. Annotation content is not judged (any expression, including string forward references, `Any`, or bare `Callable`, counts). Variable annotations and lambdas are irrelevant. A file with no `def`/`async def` is NOT_APPLICABLE; text that looks like a def inside a string or docstring is not a function definition. One missing annotation on any parameter or return of any function makes the file VIOLATED.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.py", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.py", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.py", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.py", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.py", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.py", "expected": "VIOLATED"},
+    {"id": "inap_01", "set": "dev", "kind": "inapplicable", "file": "dev/inap_01.py", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.py", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T1", "check": "^\\s*(?:async\\s+)?def\\s+\\w+\\s*\\((?:[^()]*\\)\\s*:|(?:[^()]*,)?\\s*\\*{0,2}(?!self\\b|cls\\b)\\w+\\s*(?:=[^,()]*)?[,)])", "match_means": "VIOLATED"}},
+    {"id": "ho_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.py", "expected": "SATISFIED"},
+    {"id": "ho_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.py", "expected": "SATISFIED"},
+    {"id": "ho_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.py", "expected": "VIOLATED"},
+    {"id": "ho_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.py", "expected": "VIOLATED"},
+    {"id": "ho_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.py", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T1", "check": "^\\s*(?:async\\s+)?def\\s+\\w+\\s*\\((?:[^()]*\\)\\s*:|(?:[^()]*,)?\\s*\\*{0,2}(?!self\\b|cls\\b)\\w+\\s*(?:=[^,()]*)?[,)])", "match_means": "VIOLATED"}}
+  ]
+}

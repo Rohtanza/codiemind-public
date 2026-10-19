@@ -1,0 +1,60 @@
+{
+  "name": "codiemind",
+  "displayName": "CodieMind",
+  "description": "A preference-aware coding assistant with persistent memory",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [
+    "onView:codiemind.chatPanel"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "codiemind",
+          "title": "CodieMind",
+          "icon": "media/codiemind-icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "codiemind": [
+        {
+          "type": "webview",
+          "id": "codiemind.chatPanel",
+          "name": "Chat"
+        },
+        {
+          "type": "webview",
+          "id": "codiemind.memoryPanel",
+          "name": "Memories"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "CodieMind",
+      "properties": {
+        "codiemind.backendUrl": {
+          "type": "string",
+          "default": "http://localhost:8000",
+          "description": "CodieMind backend URL"
+        }
+      }
+    },
+    "commands": []
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.3.0"
+  }
+}

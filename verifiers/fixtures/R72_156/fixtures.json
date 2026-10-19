@@ -1,0 +1,123 @@
+{
+  "rule_id": "R72_156",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "Each typed position in a TypeScript file: a variable, parameter, property, index signature, function/method return, type assertion, type argument or type-parameter default, whether its type is written explicitly or inferred by the checker. One instance = one such declaration or type position.",
+  "interpretation": "The rule forbids the `any` type, whether written (`: any`, `any[]`, `Record<string, any>`, `as any`, `<T = any>`) or silently inferred: a binding whose type the checker resolves to `any` (e.g. `const x = JSON.parse(s)`, `const body = await res.json()`) uses the any type just as much and is a violation, because the rule's remedy is to annotate such values as `unknown`. A unit conforms when every declaration/type position resolves to a type that neither is nor contains `any`; `unknown` with narrowing, generics and concrete types conform. The word `any` in comments or strings is irrelevant. A file with no declarations or type positions at all (only top-level expression statements) is NOT_APPLICABLE. Because inferred `any` has no `AnyKeyword` node, detection needs the type checker, hence T3.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "AnyKeyword",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "AnyKeyword",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "AnyKeyword",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "rule_id": "R14_3",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "One AI interaction: a call in the file that sends a prompt/messages to a language-model provider or consumes a model response stream (e.g. streamText/generateText/generateObject/streamObject/useChat calls, provider-SDK calls such as openai.chat.completions.create or anthropic.messages.stream, or a fetch/HTTP request to a model endpoint).",
+  "interpretation": "The rule requires that AI interactions go through the Vercel AI SDK: the `ai` package core functions (streamText, generateText, streamObject, generateObject, tool, embed) with @ai-sdk/* provider factories, or the AI SDK UI hooks (useChat, useCompletion from @ai-sdk/react or ai/react). An instance conforms only if the called function is BOUND to an export of `ai`/`@ai-sdk/*` (named, aliased, or namespace import). An instance is non-conforming if the model is reached via a provider SDK directly (openai, @anthropic-ai/sdk, @google/generative-ai, etc.) or via a hand-rolled fetch to a model endpoint, including when that path is wrapped in a local function that happens to be named like an AI SDK function. A file mixing AI SDK calls with any direct provider call is VIOLATED (all-instances semantics). Files with no model interaction at all (e.g. chat-history utilities, type definitions) are NOT_APPLICABLE. Type-only imports from provider packages are not instances.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.tsx", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.js", "expected": "VIOLATED"},
+    {"id": "inap_01", "set": "dev", "kind": "inapplicable", "file": "dev/inap_01.ts", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.ts", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression > Identifier[name=/^(streamText|generateText|streamObject|generateObject|useChat|useCompletion)$/]", "match_means": "SATISFIED"}},
+    {"id": "ho_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "ho_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.js", "expected": "SATISFIED"},
+    {"id": "ho_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "ho_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "ho_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.js", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression > Identifier[name=/^(streamText|generateText|streamObject|generateObject|useChat|useCompletion)$/]", "match_means": "SATISFIED"}}
+  ]
+}

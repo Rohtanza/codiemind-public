@@ -1,0 +1,123 @@
+{
+  "rule_id": "R29_131",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A diagnostic-output site: each call of a method on a value of the runtime's built-in Console type (the global `console`, reached directly, via globalThis, or through any alias/parameter typed Console), and each `debugger` statement.",
+  "interpretation": "The rule forbids leftover debugging output. A call on the built-in Console object conforms only when it is legitimate error/warning reporting: `console.error` and `console.warn`. Every other Console method (log, debug, info, trace, dir, table, time/timeEnd/timeLog, count, group) is debug code and violates, as does any `debugger` statement. Whether a receiver is the built-in console is decided by binding and type, not by spelling: a parameter typed `Console` that is passed `console` is the built-in console, so `sink.log(...)` violates; a local parameter named `console` whose type is an application-defined interface (e.g. an in-game console UI) is not the built-in Console, so its `.log` calls are neither instances nor violations. Calls to application loggers (e.g. an imported `logger.info`) are not instances. A file with no Console calls and no debugger statements is NOT_APPLICABLE; a file whose only instances are console.error/console.warn is SATISFIED.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inapp_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inapp_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": ":matches(DebuggerStatement, CallExpression > PropertyAccessExpression[expression.name=\"console\"][name.name=/^(log|debug|info|trace|dir|dirxml|table|time|timeEnd|timeLog|count|group|groupCollapsed)$/])",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "ho_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": ":matches(DebuggerStatement, CallExpression > PropertyAccessExpression[expression.name=\"console\"][name.name=/^(log|debug|info|trace|dir|dirxml|table|time|timeEnd|timeLog|count|group|groupCollapsed)$/])",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "CallExpression > PropertyAccessExpression > Identifier[name=\"console\"]",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

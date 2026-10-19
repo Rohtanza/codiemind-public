@@ -1,0 +1,24 @@
+{
+  "rule_id": "R19_35",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "One consumption of shared (cross-component) state inside a React component or custom hook: (a) any read of a React context object — a call to a context-reading hook, a <Ctx.Consumer> render-prop element, or a class component's `static contextType` + `this.context`; or (b) a call to a global-store hook from a state-management library (react-redux useSelector/useStore/useDispatch, jotai useAtom/useAtomValue/useSetAtom, recoil useRecoilState/useRecoilValue, zustand store hooks).",
+  "interpretation": "The rule prescribes React's Context hook as THE mechanism for state shared across components. An instance conforms only when it is a call to the `useContext` function exported by the 'react' module, however it is reached: named import (including under an alias such as `useContext as useStore`), `React.useContext`, or a namespace import (`R.useContext`); a same-file custom hook that wraps such a call is fine because the instance is the inner call. An instance violates when shared state is consumed any other way: a Context `.Consumer` render prop, `static contextType`, or a third-party store hook (Redux, jotai, recoil, zustand) — including when that store hook is imported under the local name `useContext`. Identity is decided by import binding, not by the callee's spelling, which is why the rule is T3. Files whose components only use local state (useState/useReducer not exposed through a provider) or props contain no instance and are NOT_APPLICABLE. Creating a context or rendering a `.Provider` is not itself an instance (it is the producer side). A file mixing a conforming useContext read with any non-conforming consumption is VIOLATED.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.jsx", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.tsx", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.tsx", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.tsx", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.tsx", "expected": "VIOLATED"},
+    {"id": "na_01", "set": "dev", "kind": "inapplicable", "file": "dev/na_01.tsx", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.tsx", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression > Identifier[name=/^(useSelector|useStore|useDispatch|useAtom|useAtomValue|useSetAtom|useRecoilState|useRecoilValue)$/], JsxOpeningElement > PropertyAccessExpression > Identifier[name=\"Consumer\"], PropertyDeclaration > Identifier[name=\"contextType\"]", "match_means": "VIOLATED"}},
+    {"id": "h_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "h_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.jsx", "expected": "SATISFIED"},
+    {"id": "h_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.tsx", "expected": "VIOLATED"},
+    {"id": "h_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.jsx", "expected": "VIOLATED"},
+    {"id": "h_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.tsx", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression > Identifier[name=/^(useSelector|useStore|useDispatch|useAtom|useAtomValue|useSetAtom|useRecoilState|useRecoilValue)$/], JsxOpeningElement > PropertyAccessExpression > Identifier[name=\"Consumer\"], PropertyDeclaration > Identifier[name=\"contextType\"]", "match_means": "VIOLATED"}}
+  ]
+}

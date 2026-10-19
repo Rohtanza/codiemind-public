@@ -1,0 +1,555 @@
+{
+  "registry_version": 55,
+  "verifiers": {
+    "R10_35:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R10_35.ts.v1.js",
+      "rule_id": "R10_35",
+      "sha256": "86f1fad640975e6eb86f18cae9f8df0d5edf3392eeaf3c14eb22047048906be3",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R10_35:ts:T2:v1",
+      "version": 1
+    },
+    "R11_35:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R11_35.ts.v1.js",
+      "rule_id": "R11_35",
+      "sha256": "63d44243f21cc64c8eafac44086c413c31edff0d3fb27855ecd27a8636c71b08",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R11_35:ts:T3:v1",
+      "version": 1
+    },
+    "R14_3:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R14_3.ts.v1.js",
+      "rule_id": "R14_3",
+      "sha256": "1515b220a9d91f78d99c6651615ea6d40475f1f6eb027c373926347573a11250",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R14_3:ts:T3:v1",
+      "version": 1
+    },
+    "R15_14:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R15_14.ts.v1.js",
+      "rule_id": "R15_14",
+      "sha256": "11fc167d555c5cb0fb8a6c5525a5e385929a04fc15d4839c1dc10e88c39f8420",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R15_14:ts:T2:v1",
+      "version": 1
+    },
+    "R18_27:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R18_27.ts.v1.js",
+      "rule_id": "R18_27",
+      "sha256": "4e89875d192f3b7a2eb2cde0148d79c801f855fac09305be9a0ab5f639d8dd48",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R18_27:ts:T3:v1",
+      "version": 1
+    },
+    "R19_35:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R19_35.ts.v1.js",
+      "rule_id": "R19_35",
+      "sha256": "7523ec8f75c634cbfd1bdaaf8ed694d242cbfac898d6ca237c512f41707f0f7c",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R19_35:ts:T3:v1",
+      "version": 1
+    },
+    "R19_9:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R19_9.ts.v1.js",
+      "rule_id": "R19_9",
+      "sha256": "5d8cff5be4c4dd1e63cb7ced9c45ab1e8d07d4316b6964d765e904654609fec8",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R19_9:ts:T3:v1",
+      "version": 1
+    },
+    "R21_24:py:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R21_24.py.v1.py",
+      "rule_id": "R21_24",
+      "sha256": "cb95433d9d0abc5ca49ca00f0c5ba783953ce7ab1ca192f12da67b87421d1b7f",
+      "target": "py",
+      "tier": "T2",
+      "verifier_id": "R21_24:py:T2:v1",
+      "version": 1
+    },
+    "R25_123:py:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R25_123.py.v1.py",
+      "rule_id": "R25_123",
+      "sha256": "4f751ab4e3ecd88940e7c23d2cba05852c3b74e9a32978173b6871b586c42a1f",
+      "target": "py",
+      "tier": "T2",
+      "verifier_id": "R25_123:py:T2:v1",
+      "version": 1
+    },
+    "R25_232:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R25_232.ts.v1.js",
+      "rule_id": "R25_232",
+      "sha256": "2914486d434e885438137c46d1b20ef82c7808111eb32c5e615d13fb538f341e",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R25_232:ts:T2:v1",
+      "version": 1
+    },
+    "R29_131:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R29_131.ts.v1.js",
+      "rule_id": "R29_131",
+      "sha256": "3088d94065fdae12d50a3b623aee11f91b0892e0f4266d7809303018ff6c4740",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R29_131:ts:T3:v1",
+      "version": 1
+    },
+    "R2_142:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R2_142.ts.v1.js",
+      "rule_id": "R2_142",
+      "sha256": "68241c856a460aa3d2e503ac1585826ceea1e172897d92099bf1749152c48176",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R2_142:ts:T2:v1",
+      "version": 1
+    },
+    "R32_124:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R32_124.ts.v1.js",
+      "rule_id": "R32_124",
+      "sha256": "de5c9a2efa5de2861a68e58e6a06768b1eea1de7c110e0509d5703e2877fe13f",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R32_124:ts:T2:v1",
+      "version": 1
+    },
+    "R32_151:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R32_151.ts.v1.js",
+      "rule_id": "R32_151",
+      "sha256": "6fbd010a3530c490b73287b76fede1ec18c0f88385bb600f79e7e15f284e7c4c",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R32_151:ts:T3:v1",
+      "version": 1
+    },
+    "R32_391:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R32_391.ts.v1.js",
+      "rule_id": "R32_391",
+      "sha256": "d15089bae3cdddfcde0c69d9e4137c7efa69747d3b000c0da2562e18c1536fd6",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R32_391:ts:T2:v1",
+      "version": 1
+    },
+    "R35_103:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R35_103.ts.v1.js",
+      "rule_id": "R35_103",
+      "sha256": "1ecbbe6d991b1fa282f596cd7c3261dbb1029193f8ccecbee9f90b4dea13fc22",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R35_103:ts:T3:v1",
+      "version": 1
+    },
+    "R38_129:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R38_129.ts.v1.js",
+      "rule_id": "R38_129",
+      "sha256": "9ea3555c7160b9567daa8c21e74f7ed92f717f84e4cbe0b55f215fbb6a0f5e54",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R38_129:ts:T3:v1",
+      "version": 1
+    },
+    "R39_44:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R39_44.ts.v1.js",
+      "rule_id": "R39_44",
+      "sha256": "3be5fb74e5f78242f815d283629fbe7a73d1773aef45aafb6c015a4a16367b62",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R39_44:ts:T3:v1",
+      "version": 1
+    },
+    "R42_19:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R42_19.ts.v1.js",
+      "rule_id": "R42_19",
+      "sha256": "179129356206c57a66281ba9534e2b7e5cf6bef84830560fb82c042c5bb1475d",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R42_19:ts:T3:v1",
+      "version": 1
+    },
+    "R43_125:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R43_125.ts.v1.js",
+      "rule_id": "R43_125",
+      "sha256": "9b2806c1c4e08de785f87f7b4901b4e92920609e3372fe9dc29219c7c9be5131",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R43_125:ts:T2:v1",
+      "version": 1
+    },
+    "R43_155:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R43_155.ts.v1.js",
+      "rule_id": "R43_155",
+      "sha256": "86b10bce6030ba8c688bf76d59eed8344afbb43a8bd96523683d3a8d7006fbc6",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R43_155:ts:T2:v1",
+      "version": 1
+    },
+    "R44_53:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R44_53.ts.v1.js",
+      "rule_id": "R44_53",
+      "sha256": "66c828b3014a27bef602abe28e1c0c318b2b4546be87186c3f771dd1d74949ab",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R44_53:ts:T3:v1",
+      "version": 1
+    },
+    "R44_66:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R44_66.ts.v1.js",
+      "rule_id": "R44_66",
+      "sha256": "dbe936f2006df8daa7ceaa566a681c456f2762c0c10e962ef630024a31f601cd",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R44_66:ts:T2:v1",
+      "version": 1
+    },
+    "R44_79:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R44_79.ts.v1.js",
+      "rule_id": "R44_79",
+      "sha256": "d55d24ba5b652a119cb4637965817ba6f5282a1c2e7a9d0dbf4f9f90d9db9ba0",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R44_79:ts:T3:v1",
+      "version": 1
+    },
+    "R52_1:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R52_1.ts.v1.js",
+      "rule_id": "R52_1",
+      "sha256": "8d0f321e46d36f04f5039df47505d72c0b01f2dd20ac82e02d7acbd16dbda86d",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R52_1:ts:T2:v1",
+      "version": 1
+    },
+    "R57_143:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R57_143.ts.v1.js",
+      "rule_id": "R57_143",
+      "sha256": "9681a27b23d44bd0a00c30119049e7af8bf3d8c6200569b007b0e8f3a8716a67",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R57_143:ts:T2:v1",
+      "version": 1
+    },
+    "R57_53:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R57_53.ts.v1.js",
+      "rule_id": "R57_53",
+      "sha256": "40fe7e344b6780850993132565399d7adc4bbb9563742314a5e6fd206b99021d",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R57_53:ts:T3:v1",
+      "version": 1
+    },
+    "R58_4:ts:T1:v1": {
+      "origin": "s2",
+      "path": "t1_lexical/R58_4.ts.v1.py",
+      "rule_id": "R58_4",
+      "sha256": "37c0d8e1a198f47368ebd2ce8d0de3bac124a48ad17c43fdae8d72fba9274e8c",
+      "target": "ts",
+      "tier": "T1",
+      "verifier_id": "R58_4:ts:T1:v1",
+      "version": 1
+    },
+    "R64_10:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R64_10.ts.v1.js",
+      "rule_id": "R64_10",
+      "sha256": "329cc4b879065a9b1ca73cf171d5065ef1adad84719aa534b996880e071a3c19",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R64_10:ts:T3:v1",
+      "version": 1
+    },
+    "R67_10:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R67_10.ts.v1.js",
+      "rule_id": "R67_10",
+      "sha256": "9b28de23a49355b9aae895d415093e225480f2a4a5b2ce176d1a1d862745560f",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R67_10:ts:T2:v1",
+      "version": 1
+    },
+    "R71_19:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R71_19.ts.v1.js",
+      "rule_id": "R71_19",
+      "sha256": "3f5c42ac6739b91098affe6f4805d8f2206d71a995de724f7284725ab190c960",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R71_19:ts:T3:v1",
+      "version": 1
+    },
+    "R72_156:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R72_156.ts.v1.js",
+      "rule_id": "R72_156",
+      "sha256": "67447d5bb1fb60703662bbd8366d85509576123fc11c1d425de1511116c5ef4f",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R72_156:ts:T3:v1",
+      "version": 1
+    },
+    "R72_34:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R72_34.ts.v1.js",
+      "rule_id": "R72_34",
+      "sha256": "adaf77d1234888cfa0a4dd7335f4f32c1d9782f7806bc614c26e77e18cfe435d",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R72_34:ts:T2:v1",
+      "version": 1
+    },
+    "R72_41:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R72_41.ts.v1.js",
+      "rule_id": "R72_41",
+      "sha256": "569b71b732c98a6365f4d22c4da516dab5ecafd6fbf3e5d32974df91c4ae063f",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R72_41:ts:T2:v1",
+      "version": 1
+    },
+    "R72_46:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R72_46.ts.v1.js",
+      "rule_id": "R72_46",
+      "sha256": "aa0d2dec8947f80540ddaa5593752b49cc1dcf5869aab8397fc71af4fe9c9413",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R72_46:ts:T3:v1",
+      "version": 1
+    },
+    "R72_62:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R72_62.ts.v1.js",
+      "rule_id": "R72_62",
+      "sha256": "767c602b0be89b99d05897f5109c9c803d666d2c341568b93ddd9c964d9e2670",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R72_62:ts:T2:v1",
+      "version": 1
+    },
+    "R72_64:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R72_64.ts.v1.js",
+      "rule_id": "R72_64",
+      "sha256": "ea28d57569dce37d336bf125639bc7661257e6de5dbf3b544e51aa701afefd04",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R72_64:ts:T2:v1",
+      "version": 1
+    },
+    "R74_228:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R74_228.ts.v1.js",
+      "rule_id": "R74_228",
+      "sha256": "1b89b5d80025841e678ffaa22f28251583c9629bf1bc328efdfcd477f289b7df",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R74_228:ts:T3:v1",
+      "version": 1
+    },
+    "R74_57:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R74_57.ts.v1.js",
+      "rule_id": "R74_57",
+      "sha256": "777ed456feec29eb15a3bf85737525ceed6f610a70fd48decfe44cf389ae2008",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R74_57:ts:T3:v1",
+      "version": 1
+    },
+    "R74_85:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R74_85.ts.v1.js",
+      "rule_id": "R74_85",
+      "sha256": "cd9c1f5c9316dedb80422c03d2e290166eea3da84df384d4e9cff0dc1724ff39",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R74_85:ts:T3:v1",
+      "version": 1
+    },
+    "R74_90:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R74_90.ts.v1.js",
+      "rule_id": "R74_90",
+      "sha256": "7e6101fc71e9fbac709e1e4ad2b3d216b8d2d02c5b8bcec07dd83a331c254233",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R74_90:ts:T3:v1",
+      "version": 1
+    },
+    "R79_6:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R79_6.ts.v1.js",
+      "rule_id": "R79_6",
+      "sha256": "436482d958e4ecab0808d987f5acf076d1850581a1749564e3ac94e547ab0b1d",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R79_6:ts:T2:v1",
+      "version": 1
+    },
+    "R81_22:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R81_22.ts.v1.js",
+      "rule_id": "R81_22",
+      "sha256": "d963bf20747b4fb02ee891c577a0f66d428ac05fb5046dae2e795b99f7dbf6e7",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R81_22:ts:T3:v1",
+      "version": 1
+    },
+    "R81_26:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R81_26.ts.v1.js",
+      "rule_id": "R81_26",
+      "sha256": "669aa4275bda77c7868b411cc7f4e625b3a53cc169962edb982125487c16daf2",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R81_26:ts:T3:v1",
+      "version": 1
+    },
+    "R82_10:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R82_10.ts.v1.js",
+      "rule_id": "R82_10",
+      "sha256": "e5bcb3234e422ceccc0204fb34a13fc036b118718b2cacbe275c4bf059a18ae2",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R82_10:ts:T2:v1",
+      "version": 1
+    },
+    "R84_22:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R84_22.ts.v1.js",
+      "rule_id": "R84_22",
+      "sha256": "01c18ac41bba5b44f074767c6cb251a6ca3384faae732600783424fd2c1eff0f",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R84_22:ts:T3:v1",
+      "version": 1
+    },
+    "R84_38:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R84_38.ts.v1.js",
+      "rule_id": "R84_38",
+      "sha256": "b5cb80e701c8d78fe0ed2dac8ba4145e3abacd17cbcdcc7b157dbb248d333fd2",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R84_38:ts:T3:v1",
+      "version": 1
+    },
+    "R8_15:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R8_15.ts.v1.js",
+      "rule_id": "R8_15",
+      "sha256": "31361d25fb2b164e6cf9267f0feb28dc34648aaeac214d8e39affc616b00b685",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R8_15:ts:T2:v1",
+      "version": 1
+    },
+    "R91_20:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R91_20.ts.v1.js",
+      "rule_id": "R91_20",
+      "sha256": "1f80b53937a57e295a09b9b9a47d07b4c9464763014635e27e609673bf0e26fa",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R91_20:ts:T3:v1",
+      "version": 1
+    },
+    "R91_5:ts:T2:v1": {
+      "origin": "s2",
+      "path": "t2_syntactic/R91_5.ts.v1.js",
+      "rule_id": "R91_5",
+      "sha256": "14452eb28b03dbaba511d34d283d43f3de8c32aa787fadb37afe04924d50e1eb",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "R91_5:ts:T2:v1",
+      "version": 1
+    },
+    "R96_105:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R96_105.ts.v1.js",
+      "rule_id": "R96_105",
+      "sha256": "695992f046d649fd7eee8ee6e608c888f2dcd2db2f5b5bb97567277b99e70c92",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R96_105:ts:T3:v1",
+      "version": 1
+    },
+    "R96_3:ts:T3:v1": {
+      "origin": "s2",
+      "path": "t3_semantic/R96_3.ts.v1.js",
+      "rule_id": "R96_3",
+      "sha256": "f038d1b838cd4df2491a41f6bc41ef96689562d9e4600b63fc2d947f9fea92da",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "R96_3:ts:T3:v1",
+      "version": 1
+    },
+    "REF_T1_header:ts:T1:v1": {
+      "origin": "reference",
+      "path": "reference/REF_T1_header.ts.v1.py",
+      "rule_id": "REF_T1_header",
+      "sha256": "2ee3e6db5bd6b11e0f7c361f19986a05f840df1b2370d43b787db20072e51455",
+      "target": "ts",
+      "tier": "T1",
+      "verifier_id": "REF_T1_header:ts:T1:v1",
+      "version": 1
+    },
+    "REF_T2_arrow:ts:T2:v1": {
+      "origin": "reference",
+      "path": "reference/REF_T2_arrow.ts.v1.js",
+      "rule_id": "REF_T2_arrow",
+      "sha256": "8e928aa69bcdee6109ed3fff101ef9d475b6a0e96820bc842d5382fb48549c83",
+      "target": "ts",
+      "tier": "T2",
+      "verifier_id": "REF_T2_arrow:ts:T2:v1",
+      "version": 1
+    },
+    "REF_T3_axios:ts:T3:v1": {
+      "origin": "reference",
+      "path": "reference/REF_T3_axios.ts.v1.js",
+      "rule_id": "REF_T3_axios",
+      "sha256": "c7b3f5f1b10a7758c685d468154e29a3b6dabac8aec6a16cc8f170195241a828",
+      "target": "ts",
+      "tier": "T3",
+      "verifier_id": "REF_T3_axios:ts:T3:v1",
+      "version": 1
+    }
+  }
+}

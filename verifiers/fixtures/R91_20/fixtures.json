@@ -1,0 +1,22 @@
+{
+  "rule_id": "R91_20", "target": "ts", "tier": "T3",
+  "governed_construct": "An authentication operation in the file: a call or construction that signs a user in or up, verifies a credential or token, or registers an authentication strategy/provider (e.g. signIn, signUp, authenticateUser, InitiateAuthCommand, token verify, passport.use, NextAuth(...), auth0 auth(...), bcrypt.compare + jwt.sign login). Each such operation is one instance, judged by the module its callee is actually bound to.",
+  "interpretation": "The rule requires that authentication be performed through Amazon Cognito. An instance conforms when the identifier/object performing the auth operation resolves to a Cognito module: aws-amplify/auth (Amplify Auth backed by a Cognito user pool), amazon-cognito-identity-js, @aws-sdk/client-cognito-identity-provider, or aws-jwt-verify's CognitoJwtVerifier for verifying Cognito tokens. An instance violates when it resolves to any other mechanism: Firebase Auth, Passport, NextAuth/Auth.js, Auth0, or a hand-rolled password check plus JWT issuance, or a local function that posts credentials to a custom endpoint. Files with no authentication operation (e.g. plain S3 or utility code) are NOT_APPLICABLE even if they use other AWS SDK clients. Edge decisions: binding decides, not names - a local function named like an Amplify call that shadows the import is not Cognito, and Cognito functions imported under Firebase-like aliases are still Cognito; verifying Cognito-issued JWTs with aws-jwt-verify counts as conforming authentication.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.js", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.ts", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.js", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.ts", "expected": "VIOLATED"},
+    {"id": "na_01", "set": "dev", "kind": "inapplicable", "file": "dev/na_01.ts", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.tsx", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression > Identifier[name=/^(signIn|signUp|confirmSignUp|signOut|fetchAuthSession)$/]", "match_means": "SATISFIED"}},
+    {"id": "h_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/h_pos_01.ts", "expected": "SATISFIED"},
+    {"id": "h_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/h_pos_02.ts", "expected": "SATISFIED"},
+    {"id": "h_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/h_neg_01.js", "expected": "VIOLATED"},
+    {"id": "h_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/h_neg_02.ts", "expected": "VIOLATED"},
+    {"id": "h_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/h_adv_01.ts", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression > Identifier[name=/^(signInWithEmailAndPassword|createUserWithEmailAndPassword|signInWithPopup|signInWithCredential)$/]", "match_means": "VIOLATED"}}
+  ]
+}

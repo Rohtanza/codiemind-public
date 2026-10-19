@@ -1,0 +1,123 @@
+{
+  "rule_id": "R72_46",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A named function whose return type (declared or inferred by the type checker) is boolean (including a type predicate `x is T`): function declarations, class/object-literal methods, getters, and arrow functions or function expressions bound to a named variable or class property. Anonymous inline callbacks are not instances.",
+  "interpretation": "Each governed function must have a name starting with a boolean prefix (is, has, can, should, will, was, were, did, does, are, needs, must, allows, supports, contains, includes) followed by an uppercase letter, e.g. isEmpty, hasRole, canEdit. A boolean-returning named function without such a prefix (validEmail, active, checkPermission, catGuard) is VIOLATED. Whether a function returns boolean is decided by its resolved return type, not by a literal `: boolean` annotation: an unannotated function returning a comparison or a call like RegExp.test, or one annotated with a local alias such as `type Toggle = boolean`, is governed. Functions returning Promise<boolean>, boolean | undefined, or non-boolean types are not governed. A file with no boolean-returning named function is NOT_APPLICABLE. Names in comments and strings are irrelevant.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inapplicable_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inapplicable_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": ":matches(FunctionDeclaration, MethodDeclaration):matches(:has(BooleanKeyword), :has(TypePredicate)):not([name.escapedText=/^(is|has|can|should|will|was|were|did|does|are|needs|must|allows|supports|contains|includes)[A-Z]/])",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": ":matches(FunctionDeclaration, MethodDeclaration):matches(:has(BooleanKeyword), :has(TypePredicate)):not([name.escapedText=/^(is|has|can|should|will|was|were|did|does|are|needs|must|allows|supports|contains|includes)[A-Z]/])",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "FunctionDeclaration:has(BooleanKeyword):not(:has(Identifier[name=/^(is|has|can)[A-Z]/]))",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

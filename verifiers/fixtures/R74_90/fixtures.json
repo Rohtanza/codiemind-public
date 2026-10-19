@@ -1,0 +1,122 @@
+{
+  "rule_id": "R74_90",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A call that persists user-generated content (a file, blob, buffer, byte array or data URL) to a storage service: Firebase Storage calls (uploadBytes, uploadBytesResumable, uploadString from 'firebase/storage'; compat Reference.put/putString; firebase-admin Bucket.upload / File.save) or another storage backend's write call (AWS S3 PutObjectCommand / Upload, Supabase storage .upload, Cloudinary uploader.upload, Vercel Blob put, etc.).",
+  "interpretation": "The rule requires that user-generated content be stored through Firebase Storage. Each storage-write call in the file is one instance; it conforms only if the callee is bound (via import resolution, following aliases, namespace imports and method receivers to their declaring module) to the Firebase Storage SDK ('firebase/storage', 'firebase/compat/storage' or 'firebase-admin/storage'). A write to any other storage service is a violation, even if Firebase Storage is also used in the same file (all-instances semantics). The name of the callee does not decide the verdict: a local function or class method called uploadBytes that actually writes to S3 is an S3 instance, and a firebase-admin bucket.upload() is a Firebase instance despite its generic name. Files with no storage writes (e.g. Firestore reads, Firebase Storage reads only) are NOT_APPLICABLE. Downloads/reads and URL retrieval are not governed instances.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inapp_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inapp_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "CallExpression > Identifier[name=/^(uploadBytes|uploadBytesResumable|uploadString)$/]",
+        "match_means": "SATISFIED"
+      }
+    },
+    {
+      "id": "adv_02",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_02.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "CallExpression > PropertyAccessExpression > Identifier[name=/^(upload|put)$/]",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "CallExpression > PropertyAccessExpression > Identifier[name=/^(uploadBytes|uploadBytesResumable|uploadString)$/]",
+        "match_means": "SATISFIED"
+      }
+    }
+  ]
+}

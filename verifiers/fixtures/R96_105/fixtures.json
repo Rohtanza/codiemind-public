@@ -1,0 +1,22 @@
+{
+  "rule_id": "R96_105", "target": "ts", "tier": "T3",
+  "governed_construct": "A Cytoscape instance created inside a component lifecycle (a call to the default export of the 'cytoscape' package, under whatever local name it is bound by import or require, inside a React useEffect/useLayoutEffect callback or a class componentDidMount), together with the event listeners registered in that same lifecycle (on the instance via cy.on, or on window/document via addEventListener). One instance = one such creation site.",
+  "interpretation": "On unmount, every Cytoscape instance a component creates must be torn down by calling destroy() on it in the matching cleanup (the function returned from the effect, or componentWillUnmount), and every window/document listener added alongside it must be removed with removeEventListener. Listeners registered on the Cytoscape instance itself are released by destroy(), so explicit off() is optional; conversely off()/removeListener()/elements().remove() without destroy() does not count as cleanup. A missing cleanup, a cleanup that skips destroy(), or a cleanup that destroys the instance but leaves a DOM listener attached is VIOLATED. Whether a call creates a Cytoscape instance is decided by binding: the callee must resolve to the 'cytoscape' package's default export, whether imported as `cytoscape`, under an alias, or via require; a file that creates no Cytoscape instance is NOT_APPLICABLE even if it mentions Cytoscape in comments or manages unrelated listeners.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.tsx", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.tsx", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.tsx", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.tsx", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.tsx", "expected": "VIOLATED"},
+    {"id": "na_01", "set": "dev", "kind": "inapplicable", "file": "dev/na_01.tsx", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.tsx", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "SourceFile:has(CallExpression > Identifier[name=\"cytoscape\"]):not(:has(PropertyAccessExpression > Identifier[name=\"destroy\"]))", "match_means": "VIOLATED"}},
+    {"id": "h_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "h_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.jsx", "expected": "SATISFIED"},
+    {"id": "h_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.jsx", "expected": "VIOLATED"},
+    {"id": "h_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.tsx", "expected": "VIOLATED"},
+    {"id": "h_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.jsx", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "SourceFile:has(CallExpression > Identifier[name=\"cytoscape\"]):not(:has(PropertyAccessExpression > Identifier[name=\"destroy\"]))", "match_means": "VIOLATED"}}
+  ]
+}

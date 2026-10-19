@@ -1,0 +1,24 @@
+{
+  "rule_id": "R18_27",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A variable declaration whose initializer is a Vue template-ref creation call (ref, shallowRef or useTemplateRef from 'vue') whose type argument resolves to the instance type of a Vue component (a default import from a .vue file or a value created with defineComponent), whether written inline as InstanceType<typeof X> or through a type alias.",
+  "interpretation": "A template ref that will hold a Vue component instance must be bound to a variable whose name ends with 'ComponentRef' (e.g. modalComponentRef). Refs typed as DOM elements (HTMLInputElement, HTMLCanvasElement), plain state refs, and refs holding instances of non-Vue classes (e.g. a chart.js Chart) are not governed. The component-ness of the referenced type is determined by resolving the binding: the typeof target must be a .vue import or a defineComponent result, and type aliases are followed. Names like modalRef, sidebar, editor, player or searchBoxInstance violate; a file with only element or state refs is NOT_APPLICABLE. All-instances semantics: one non-conforming component ref makes the file VIOLATED.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.ts", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.ts", "expected": "VIOLATED"},
+    {"id": "inap_01", "set": "dev", "kind": "inapplicable", "file": "dev/inap_01.ts", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.ts", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T2", "check": "VariableDeclaration:has(CallExpression > Identifier[name=/^(ref|shallowRef|useTemplateRef)$/]):has(TypeQuery) > Identifier[name!=/ComponentRef$/]", "match_means": "VIOLATED"}},
+    {"id": "ho_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "ho_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "ho_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.tsx", "expected": "VIOLATED"},
+    {"id": "ho_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "ho_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.ts", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "VariableDeclaration:has(CallExpression > Identifier[name=/^(ref|shallowRef|useTemplateRef)$/]):has(TypeQuery) > Identifier[name!=/ComponentRef$/]", "match_means": "VIOLATED"}}
+  ]
+}

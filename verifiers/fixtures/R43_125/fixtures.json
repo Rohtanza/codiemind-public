@@ -1,0 +1,123 @@
+{
+  "rule_id": "R43_125",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A named object-type definition: every `interface` declaration, and every `type` alias declaration (top-level or local, exported or not, generic or not) whose aliased type is an object type literal `{ ... }` (possibly parenthesized).",
+  "interpretation": "The rule asks that named object shapes be declared with `interface` rather than `type X = { ... }`. An interface declaration is a conforming instance; a type alias whose right-hand side is directly an object type literal is a non-conforming instance. A union of object literals (e.g. `type R = {a} | {b}`) is treated as an object definition expressed with `type` and counts as a violation, since each member is an inline object definition that could be an interface. Type aliases that are not object definitions (string/literal unions, function types, utility-type references such as Record<...>, keyof, mapped or conditional types) are not instances and are neither conforming nor violating. Inline object types in annotations (e.g. a parameter typed `{ x: number }`) and object literals in values are not definitions and are ignored. Text in comments and strings is ignored. A file with no interface and no object-literal type alias is NOT_APPLICABLE.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^\\s*(?:export\\s+)?(?:declare\\s+)?type\\s+[A-Za-z_$][\\w$]*\\s*(?:<[^>]*>)?\\s*=\\s*\\(?\\s*\\{",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^\\s*(?:export\\s+)?(?:declare\\s+)?type\\s+[A-Za-z_$][\\w$]*\\s*(?:<[^>]*>)?\\s*=\\s*\\(?\\s*\\{",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "type\\s+\\w+\\s*=\\s*\\{",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

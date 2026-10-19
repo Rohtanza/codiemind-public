@@ -1,0 +1,123 @@
+{
+  "rule_id": "R44_66",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A module-level export of a value (component, function, class, constant) from a source file: every ExportNamedDeclaration, re-export (export {..} from / export * from), and every default export form (export default <declaration|expression>, export { x as default }).",
+  "interpretation": "The rule asks that a file expose its components and utilities through named exports rather than a default export. A file with at least one export where none is a default export is SATISFIED (export function/const/class/let, export { a, b }, export { x } from, export * from, export type all conform). Any default export makes the file VIOLATED, including export default function/class/arrow/identifier and the aliased form export { x as default }, even if other named exports are also present. A file with no export statements at all (a script or entry point) is NOT_APPLICABLE. Text that merely mentions 'export default' inside comments or string/template literals is not an export and does not count.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.jsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^\\s*export\\s+default\\b|\\bexport\\s*\\{[^}]*\\bas\\s+default\\b",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "ho_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.jsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^\\s*export\\s+default\\b|\\bexport\\s*\\{[^}]*\\bas\\s+default\\b",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "export\\s+default",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

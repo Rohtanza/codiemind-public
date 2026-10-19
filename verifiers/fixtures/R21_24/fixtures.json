@@ -1,0 +1,123 @@
+{
+  "rule_id": "R21_24",
+  "target": "py",
+  "tier": "T2",
+  "governed_construct": "Each function or method definition (def / async def, at any nesting level) and each class definition in the file. Lambdas are not instances.",
+  "interpretation": "The rule requires every function, method and class to carry a docstring (a string literal as the first statement of its body) written in Google style. A class conforms if it has a docstring. A function conforms if (a) it has a docstring; (b) when it declares any parameters other than a leading self/cls (including *args and **kwargs), the docstring has an 'Args:' section line and each such parameter appears in it as an entry 'name:' or 'name (type):' (with leading * or ** for variadics); (c) when its own body (excluding nested defs) contains a 'return <expr>' whose value is not a bare None, the docstring has a 'Returns:' section; (d) when its own body contains yield, the docstring has a 'Yields:' section ('Returns:' not required). A 'Raises:' section is allowed but not required. A function with no documentable parameters and no returned value conforms with a summary-only docstring. Sphinx/reST style (':param x:', ':returns:') and NumPy style ('Parameters' / '----------' underlines) do not conform, because they lack the Google 'Args:'/'Returns:' sections. A missing docstring on any instance, an undocumented parameter, or a missing Returns/Yields section makes the whole file VIOLATED. Files with no def or class are NOT_APPLICABLE. Content of strings and comments that merely look like definitions are not instances.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.py",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.py",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.py",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.py",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.py",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.py",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inapp_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inapp_01.py",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.py",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^\\s*(?:async\\s+)?def\\s+\\w+\\s*\\([^)]*\\)[^:]*:\\s*\\n(?!\\s*[rRuUbB]?(?:\"\"\"|'''))",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "ho_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.py",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.py",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.py",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.py",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.py",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^\\s*(?:async\\s+)?def\\s+\\w+\\s*\\(\\s*(?:(?:self|cls)\\s*,\\s*)?(?!self\\b|cls\\b|\\))[^)]*\\)[^:]*:\\s*\\n\\s*[rRuU]?(?:\"\"\"|''')(?:(?!Args:)[\\s\\S])*?(?:\"\"\"|''')",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.py",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^\\s*def \\w+\\([^)]*\\)[^:\\n]*:\\n(?!\\s*\"\"\")",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

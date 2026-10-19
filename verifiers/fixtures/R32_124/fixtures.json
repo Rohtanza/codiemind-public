@@ -1,0 +1,135 @@
+{
+  "rule_id": "R32_124",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A function definition whose name marks it as an initialization function, i.e. whose name begins with 'init' (case-insensitive): function declarations, named function expressions or arrow functions bound to a variable, class methods, object-literal methods/properties whose value is a function, and functions assigned to a member (e.g. module.exports.X = function...). Calls, imports, and non-function bindings (e.g. an 'initialized' boolean field, an 'initialState' object) are not instances.",
+  "interpretation": "An initialization function is identified by its name starting with 'init' in any case (init, initX, InitX, initializeX, InitializeX, Initializer...). It conforms only if its name is exactly 'Initialize' followed by a non-empty PascalCase category, i.e. matches ^Initialize[A-Z][A-Za-z0-9]*$ (e.g. InitializeHandlers). Abbreviated forms (initHandlers, InitDatabase), camelCase (initializeQueue), and bare 'Initialize'/'init' with no category violate. Only definitions count; calls to or imports of init-prefixed functions defined elsewhere are not instances, and identifiers that merely start with 'init' but are not bound to a function (initialized, initialState) are not instances. Mentions in comments or strings are ignored. Functions with other setup-like names (setup, bootstrap, configure) are not treated as initialization functions, since the rule is a naming rule and only the init-prefix gives a deterministic reading.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ina_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/ina_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bfunction\\s*\\*?\\s*|\\b(?:const|let|var)\\s+|^\\s*(?:(?:export|public|private|protected|static|async|readonly)\\s+)*)(?!Initialize[A-Z])[Ii]nit\\w*\\s*[=:(<]",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bfunction\\s*\\*?\\s*|\\b(?:const|let|var)\\s+|^\\s*(?:(?:export|public|private|protected|static|async|readonly)\\s+)*)(?!Initialize[A-Z])[Ii]nit\\w*\\s*[=:(<]",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_adv_02",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_02.js",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bfunction\\s*\\*?\\s*|\\b(?:const|let|var)\\s+|^\\s*(?:(?:export|public|private|protected|static|async|readonly)\\s+)*)(?!Initialize[A-Z])[Ii]nit\\w*\\s*[=:(<]",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "function\\s+Initialize[A-Z]\\w*\\s*\\(",
+        "match_means": "SATISFIED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "rule_id": "R82_10",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "An `if` statement located inside a function body (function declaration, function expression, arrow function, method, constructor, accessor). `if` statements at module top level are not instances.",
+  "interpretation": "The rule asks that conditional logic inside functions be flattened with early exits (return, throw, continue, break) instead of nesting conditions. Operationally, an `if` statement is non-conforming when it is a descendant of the consequent or alternate branch of another `if` statement within the same function, at any depth (including through intervening loops, blocks, try/catch/finally, or switch), without crossing a nested function boundary; an `if` inside a nested function or callback is judged only against `if` statements of that inner function. An `else if` chain is flat, not nested: an IfStatement that is directly the alternate of another IfStatement does not count as nested in it (but an `if` inside the blocks of an else-if branch, or inside a plain `else { ... }` block, does). Guard clauses, sequential ifs, else-if chains and ifs inside loops that are not themselves inside an `if` all conform. Ternaries, logical-operator short-circuits and switch statements are not governed instances. A file with no `if` statement inside any function is NOT_APPLICABLE. Mentions of `if` in comments or strings are irrelevant.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\bif\\s*\\(.*\\)\\s*\\{[^{}]*?\\bif\\s*\\(",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "pos_04",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_05",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_04",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_05",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "adv_02",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\bif\\s*\\(.*\\)\\s*\\{[^{}]*?\\bif\\s*\\(",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "if \\(.*\\) \\{\\s*\\n.*if \\(",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

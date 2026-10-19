@@ -1,0 +1,22 @@
+{
+  "rule_id": "R42_19", "target": "ts", "tier": "T3",
+  "governed_construct": "One read of the device/system colour scheme for dark-mode support: a call to any function named or aliased as useColorScheme (whatever it is bound to), a call to Appearance.getColorScheme or Appearance.addChangeListener, or a matchMedia('(prefers-color-scheme: ...)') query.",
+  "interpretation": "Expo's useColorScheme is the useColorScheme hook that Expo exposes from 'react-native'. An instance conforms when the colour scheme is obtained through a call that resolves to that hook: a named import from 'react-native' (including aliased imports), a namespace import (RN.useColorScheme()), or a local wrapper whose body itself delegates to the react-native hook. An instance does not conform when the scheme comes from anywhere else: Appearance.getColorScheme()/addChangeListener read imperatively, window.matchMedia on prefers-color-scheme, or a same-named useColorScheme hook from another package (nativewind, react-native-appearance). The verdict follows the binding of the identifier that is actually called, not the presence of an import or of the name; a react-native import that is only used in a type position is not an instance. A file with any non-conforming scheme read is VIOLATED even if it also uses the react-native hook. A file that reads no colour scheme at all is NOT_APPLICABLE.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.tsx", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.tsx", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.tsx", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.tsx", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.ts", "expected": "VIOLATED"},
+    {"id": "na_01", "set": "dev", "kind": "inapplicable", "file": "dev/na_01.tsx", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.tsx", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "ImportDeclaration[moduleSpecifier.text=\"react-native\"] ImportSpecifier Identifier[text=\"useColorScheme\"]", "match_means": "SATISFIED"}},
+    {"id": "pos_04", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "pos_05", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.tsx", "expected": "SATISFIED"},
+    {"id": "neg_04", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.tsx", "expected": "VIOLATED"},
+    {"id": "neg_05", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "adv_02", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.tsx", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T2", "check": "FunctionDeclaration > Identifier[text=\"useColorScheme\"]", "match_means": "VIOLATED"}}
+  ]
+}

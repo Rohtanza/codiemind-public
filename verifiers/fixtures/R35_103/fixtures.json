@@ -1,0 +1,110 @@
+{
+  "rule_id": "R35_103",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A date or a monetary amount rendered into a Korean-language email template (a string/template literal or JSX text forming an email subject/body that contains Hangul). Each interpolated date value and each interpolated money value is one instance.",
+  "interpretation": "Only the machine-checkable clauses of the rule are verified: dates shown in a Korean email must render as yyyy년 MM월 dd일 (4-digit year, zero-padded month and day, with 년/월/일), produced by a date-library call whose pattern yields that form (date-fns 'yyyy년 MM월 dd일', dayjs/moment 'YYYY년 MM월 DD일') or by equivalent manual assembly; amounts must be KRW-formatted (Intl.NumberFormat 'ko-KR' with currency KRW, or toLocaleString('ko-KR') followed by 원). A date rendered any other way (toLocaleDateString('en-US'), toISOString, 'yyyy-MM-dd', 'MMMM D, YYYY') or an amount in another currency is a violation. Honorifics, business conventions and cultural context need human judgement and are not verified here. Whether a call really formats with the Korean pattern depends on what the callee is bound to: a local function named format that ignores its pattern does not conform, and an aliased date-fns import does; util.format calls are not date rendering. A Korean email with no date and no amount is NOT_APPLICABLE.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ina_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/ina_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "CallExpression[expression.escapedText=\"format\"] > StringLiteral[text=/yyyy년 MM월 dd일/]",
+        "match_means": "SATISFIED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "CallExpression[expression.escapedText=\"format\"] > StringLiteral:not([text=/년/])",
+        "match_means": "VIOLATED"
+      }
+    }
+  ]
+}

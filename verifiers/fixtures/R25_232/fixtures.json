@@ -1,0 +1,123 @@
+{
+  "rule_id": "R25_232",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A module specifier in real code that refers to a project-local module: the string-literal source of an import declaration (including import type), an export ... from / export * from declaration, a dynamic import() call, or a require() call, whose specifier is either relative ('./', '../') or a path-mapped alias ('@/...'). Bare package specifiers (e.g. 'react', 'zod', '@scope/pkg') are not instances. Specifiers mentioned only in comments or string literals that are not import/require sources are not instances.",
+  "interpretation": "The rule asks that local modules be imported through the tsconfig path mapping (e.g. '@/lib/prisma') rather than via relative paths. 'When possible' is read as: whenever the import crosses into a parent directory, an alias is possible and preferred, so any project-local specifier beginning with '../' is VIOLATED; an alias specifier ('@/...') conforms, and a same-directory './' specifier is tolerated as conforming because co-located sibling imports are the common exception where an alias adds nothing. A file is SATISFIED if it has at least one project-local import/export-from/require/dynamic-import source and none starts with '../'; VIOLATED if any one does; NOT_APPLICABLE if it imports only external packages or nothing at all. Commented-out imports and import-looking text inside ordinary string literals are ignored, which is why a regex over source text is unsound and the rule is T2 (a syntax query over ImportDeclaration/ExportDeclaration/CallExpression module-specifier nodes).",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bfrom\\s*|\\brequire\\s*\\(\\s*|\\bimport\\s*\\(\\s*|^\\s*import\\s+)['\"`]\\.\\./",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "ho_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bfrom\\s*|\\brequire\\s*\\(\\s*|\\bimport\\s*\\(\\s*|^\\s*import\\s+)['\"`]\\.\\./",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "from\\s+['\"]\\.\\.?/",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

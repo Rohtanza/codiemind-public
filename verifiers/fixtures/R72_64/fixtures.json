@@ -1,0 +1,123 @@
+{
+  "rule_id": "R72_64",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A class: every ClassDeclaration or ClassExpression in the file (including abstract classes and React class components). Interfaces, type aliases, object literals and functions are not classes and are not instances.",
+  "interpretation": "Each class is one instance and conforms only if all three measurable limits hold: (1) fewer than 10 public methods, (2) fewer than 10 properties, (3) fewer than 200 instructions. 'Single purpose' is not mechanically checkable and is not used for the verdict. Public methods = method declarations and get/set accessors in the class body (static or instance, sync or async) that are not marked private or protected and do not have a #private name; the constructor is not counted; arrow functions assigned to fields are properties, not methods. Properties = all property declarations in the class body regardless of accessibility (public, private, protected, readonly, static, #private, with or without initializer), plus TypeScript constructor parameter properties (parameters carrying public/private/protected/readonly), plus distinct names assigned as `this.name = ...` in the constructor body that are not already declared (the JavaScript idiom for declaring fields). Instructions = statement nodes nested anywhere inside the class's members, counted recursively; a class with 200 or more is VIOLATED. Exactly 10 public methods or exactly 10 properties is VIOLATED ('less than 10'). A file is VIOLATED if any class breaks any limit, SATISFIED if it has at least one class and all conform, NOT_APPLICABLE if it contains no class. Object literals with many methods and interfaces with many members are not classes and are ignored.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inapp_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inapp_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:^[ \\t]+(?:(?:public|static|async|override)\\s+)*(?!(?:if|for|while|switch|catch|function|return|constructor)\\b)[A-Za-z_$][\\w$]*\\s*\\([^)\\n]*\\)[^\\n{;]*\\{[\\s\\S]*?){10}|(?:^[ \\t]+(?:(?:public|private|protected|readonly|static|declare)\\s+)*#?[A-Za-z_$][\\w$]*[?!]?\\s*[:=][^\\n]*\\n){10}",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:^[ \\t]+(?:(?:public|static|async|override)\\s+)*(?!(?:if|for|while|switch|catch|function|return|constructor)\\b)[A-Za-z_$][\\w$]*\\s*\\([^)\\n]*\\)[^\\n{;]*\\{[\\s\\S]*?){10}|(?:^[ \\t]+(?:(?:public|private|protected|readonly|static|declare)\\s+)*#?[A-Za-z_$][\\w$]*[?!]?\\s*[:=][^\\n]*\\n){10}",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bpublic\\s+\\w+\\s*\\([\\s\\S]*?){10}",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

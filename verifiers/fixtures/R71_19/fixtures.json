@@ -1,0 +1,110 @@
+{
+  "rule_id": "R71_19",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "An icon component referenced as a value in the unit: every binding that resolves to an icon component or icon definition (imported via import/require from an icon package such as lucide-react, react-icons, @heroicons/react, @fortawesome/*, @mui/icons-material, @tabler/icons-react, phosphor, react-feather, @radix-ui/react-icons, @iconify/react) and is rendered in JSX, passed to createElement, or stored as an icon value.",
+  "interpretation": "The rule requires that icons come from lucide-react. A unit is SATISFIED when it uses at least one icon and every icon value it uses resolves to an export of lucide-react (named, aliased or namespace import; the binding name is irrelevant). It is VIOLATED when any icon value resolves to another icon library (including Font Awesome icon definitions passed to FontAwesomeIcon, and require() imports), even if lucide icons are also present. It is NOT_APPLICABLE when no icon is used. Edge decisions: comments and strings mentioning other libraries are not instances; a binding imported from another icon package that resolves to a TYPE (e.g. IconType, IconBaseProps) and is used only in type positions is not an icon and does not violate, so the decision depends on what each imported binding resolves to, not merely on the module specifier text.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "ImportDeclaration > StringLiteral[text=/^(react-icons|@heroicons.react|@fortawesome.|@mui.icons-material|@tabler.icons-react|phosphor-react|@phosphor-icons.react|react-feather|@radix-ui.react-icons|@iconify.react|react-bootstrap-icons|@ant-design.icons)/], CallExpression[expression.text=\"require\"] > StringLiteral[text=/^(react-icons|@heroicons.react|@fortawesome.|@mui.icons-material|@tabler.icons-react|phosphor-react|@phosphor-icons.react|react-feather|@radix-ui.react-icons|@iconify.react|react-bootstrap-icons|@ant-design.icons)/]",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.jsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "ImportDeclaration > StringLiteral[text=/^(react-icons|@heroicons.react|@fortawesome.|@mui.icons-material|@tabler.icons-react|phosphor-react|@phosphor-icons.react|react-feather|@radix-ui.react-icons|@iconify.react|react-bootstrap-icons|@ant-design.icons)/], CallExpression[expression.text=\"require\"] > StringLiteral[text=/^(react-icons|@heroicons.react|@fortawesome.|@mui.icons-material|@tabler.icons-react|phosphor-react|@phosphor-icons.react|react-feather|@radix-ui.react-icons|@iconify.react|react-bootstrap-icons|@ant-design.icons)/]",
+        "match_means": "VIOLATED"
+      }
+    }
+  ]
+}

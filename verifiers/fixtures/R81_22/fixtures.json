@@ -1,0 +1,110 @@
+{
+  "rule_id": "R81_22",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "Use of a front-end UI/reactivity framework in a code unit: an import (static, dynamic or require) of a UI framework package or its ecosystem sub-packages (vue, vue-router, pinia, react, react-dom, preact, svelte, solid-js, @angular/core, ...), or JSX whose factory/import source is a UI framework (resolved through the jsxImportSource pragma or compiler configuration). Each such framework binding or JSX usage is one instance.",
+  "interpretation": "'Use Vue' is read as: whenever a code unit builds UI components, reactive state, app bootstrap or routing with a front-end framework, that framework must be Vue (the 'vue' package or Vue-ecosystem packages such as vue-router and pinia). A unit that imports and uses Vue APIs (defineComponent, ref, computed, createApp, h, composables, Vue router) is SATISFIED. A unit that uses React, Preact, Svelte, SolidJS, Angular or another UI framework is VIOLATED, even if it also uses Vue. A unit with no UI-framework usage at all (plain utility code) is NOT_APPLICABLE. JSX/TSX is not itself a violation: JSX conforms when its factory resolves to Vue (via '@jsxImportSource vue', Vue's JSX plugin with defineComponent render functions) and violates when it resolves to React or another framework; deciding this needs the JSX import source and the bindings of imported names, which is why the rule is T3.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "JsxElement, JsxSelfClosingElement",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "ho_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "JsxElement, JsxSelfClosingElement",
+        "match_means": "VIOLATED"
+      }
+    }
+  ]
+}

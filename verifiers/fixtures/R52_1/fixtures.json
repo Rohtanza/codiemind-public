@@ -1,0 +1,123 @@
+{
+  "rule_id": "R52_1",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A React component definition: a function declaration, function expression or arrow function bound to a PascalCase name (including one passed directly to memo/forwardRef) whose body contains JSX, or a class with a PascalCase name that extends Component/React.Component/PureComponent. Each such definition, including one nested inside another component, is one instance; its size is the number of physical source lines spanned by the definition node, from the line where the declaration starts to the line holding its closing token, inclusive.",
+  "interpretation": "The rule sets an explicit, checkable size bound: a component is 'small and focused' when its definition spans at most 100 source lines; a component spanning 101 or more lines violates the rule (it should have been broken down). Exactly 100 lines conforms. Lines are counted over the component's own syntax node (blank lines and comments inside it count, because they are part of the component's extent), not over the whole file, so imports, types and helpers outside the component do not count, and code that merely mentions a component inside a comment or string is not a component. A nested component inside a larger component is its own instance, and the enclosing component's span still includes it. Functions without JSX and with non-PascalCase names (utilities, hooks) are not components; a file with no component is NOT_APPLICABLE. 'Focused' is not judged separately: the 100-line threshold is the rule's own operationalisation of it. Because violating units must exceed 100 lines, negative fixtures are necessarily longer than the 30-line guideline.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.jsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.jsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ina_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/ina_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^(?:export\\s+)?(?:default\\s+)?(?:function\\s+[A-Z]\\w*|(?:const|let|var)\\s+[A-Z]\\w*\\b[^\\n]*(?:=>|function)|class\\s+[A-Z]\\w*\\s+extends\\b)[^\\n]*\\n(?:(?!\\}).*\\n){100,}",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "ho_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.jsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.jsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.tsx",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^(?:export\\s+)?(?:default\\s+)?(?:function\\s+[A-Z]\\w*|(?:const|let|var)\\s+[A-Z]\\w*\\b[^\\n]*(?:=>|function)|class\\s+[A-Z]\\w*\\s+extends\\b)[^\\n]*\\n(?:(?!\\}).*\\n){100,}",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\A(?:.*\\n){100}.*\\S",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

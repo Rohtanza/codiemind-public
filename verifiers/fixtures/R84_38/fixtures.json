@@ -1,0 +1,24 @@
+{
+  "rule_id": "R84_38",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A client-side routing/navigation mechanism used in the file: an import of a routing library (react-router-dom, react-router, wouter, next/router, @reach/router, @tanstack/react-router, etc.) together with the router components, hooks and navigate functions bound to it, or a direct History API navigation call (pushState/replaceState) on an expression bound to window.history.",
+  "interpretation": "The rule requires that in-app routing be done through react-router-dom. Each routing instance in a file is examined by what it is bound to: router components (BrowserRouter, Routes, Route, Link, NavLink, Outlet, RouterProvider), hooks (useNavigate, useParams, ...) and helpers (createBrowserRouter, redirect) imported from react-router-dom conform. Routing bound to any other routing package (wouter, next/router, @reach/router, @tanstack/react-router, or the bare react-router package) does not conform, and neither does hand-rolled routing that calls pushState/replaceState on the real window.history object, whether written as window.history.pushState, history.pushState on the global, or through an alias such as const nav = window.history. A file mixing a conforming react-router-dom usage with any non-conforming instance is VIOLATED. A method merely named pushState on a local, unrelated object (e.g. an undo stack called history) is not routing and does not count. Files with no routing or navigation at all are NOT_APPLICABLE. Reading window.location without navigating is not an instance.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.tsx", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.tsx", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.tsx", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.tsx", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.tsx", "expected": "VIOLATED"},
+    {"id": "ina_01", "set": "dev", "kind": "inapplicable", "file": "dev/ina_01.ts", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.tsx", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T2", "check": "ImportDeclaration > StringLiteral[text=/^(wouter|next\\/router|@reach\\/router|@tanstack\\/react-router|react-router)$/], CallExpression > PropertyAccessExpression[name.name=/^(pushState|replaceState)$/]:matches([expression.name=\"history\"], [expression.name.name=\"history\"])", "match_means": "VIOLATED"}},
+    {"id": "h_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/h_pos_01.tsx", "expected": "SATISFIED"},
+    {"id": "h_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/h_pos_02.ts", "expected": "SATISFIED"},
+    {"id": "h_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/h_neg_01.tsx", "expected": "VIOLATED"},
+    {"id": "h_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/h_neg_02.tsx", "expected": "VIOLATED"},
+    {"id": "h_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/h_adv_01.tsx", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "ImportDeclaration > StringLiteral[text=/^(wouter|next\\/router|@reach\\/router|@tanstack\\/react-router|react-router)$/], CallExpression > PropertyAccessExpression[name.name=/^(pushState|replaceState)$/]:matches([expression.name=\"history\"], [expression.name.name=\"history\"])", "match_means": "VIOLATED"}}
+  ]
+}

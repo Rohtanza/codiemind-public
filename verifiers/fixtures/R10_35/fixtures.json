@@ -1,0 +1,123 @@
+{
+  "rule_id": "R10_35",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "The sequence of top-level static ES import declarations (ImportDeclaration nodes, including `import type`) in one source file. Each declaration is classified by its module specifier: external package (any specifier not starting with '.', '/' or '@/', including scoped packages like '@nestjs/common' and node builtins like 'node:fs'), models ('@/models/...'), shared ('@/shared/...'), modules ('@/modules/...'), relative ('./' or '../'). A file with at least one import declaration is an instance.",
+  "interpretation": "The rule fixes a group order: external < @/models/ < @/shared/ < @/modules/ < relative. A file is SATISFIED when, reading its import declarations in source order, the group rank never decreases (groups may be skipped, and several imports may share a group in any internal order). It is VIOLATED when any import declaration has a lower group rank than some earlier import declaration in the same file. It is NOT_APPLICABLE when the file has no import declarations. Only real ImportDeclaration nodes count: text that looks like an import inside comments or string/template literals is ignored, dynamic import() calls and require() calls are not import declarations, and export-from re-exports are not governed. A declaration split over several lines is one declaration classified by its specifier. Scoped npm packages ('@scope/pkg') are external, not alias imports; only the literal '@/' prefix denotes the project alias. Specifiers under other '@/' aliases not named by the rule are unclassified and do not affect the verdict (none of the fixtures use them).",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ina_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/ina_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^import\\b[^;]*?from\\s*['\"]\\.[^'\"]*['\"][\\s\\S]*^import\\b[^;]*?from\\s*['\"](?!\\.)|^import\\b[^;]*?from\\s*['\"]@/modules/[\\s\\S]*^import\\b[^;]*?from\\s*['\"](?:@/models/|@/shared/|(?!@/|\\.))|^import\\b[^;]*?from\\s*['\"]@/shared/[\\s\\S]*^import\\b[^;]*?from\\s*['\"](?:@/models/|(?!@/|\\.))|^import\\b[^;]*?from\\s*['\"]@/models/[\\s\\S]*^import\\b[^;]*?from\\s*['\"](?!@/|\\.)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^import\\b[^;]*?from\\s*['\"]\\.[^'\"]*['\"][\\s\\S]*^import\\b[^;]*?from\\s*['\"](?!\\.)|^import\\b[^;]*?from\\s*['\"]@/modules/[\\s\\S]*^import\\b[^;]*?from\\s*['\"](?:@/models/|@/shared/|(?!@/|\\.))|^import\\b[^;]*?from\\s*['\"]@/shared/[\\s\\S]*^import\\b[^;]*?from\\s*['\"](?:@/models/|(?!@/|\\.))|^import\\b[^;]*?from\\s*['\"]@/models/[\\s\\S]*^import\\b[^;]*?from\\s*['\"](?!@/|\\.)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^import .* from '\\.{1,2}/.*\\n(?:.*\\n)*?import .* from '[^.]",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

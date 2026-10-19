@@ -1,0 +1,123 @@
+{
+  "rule_id": "R15_14",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "Every binding name the code itself declares for a variable or function: identifiers bound by var/let/const declarators (including every name bound inside object/array destructuring patterns, for-loop and for-of/in heads), names of function declarations, generator/async function declarations and named function expressions, function/arrow/method parameters (including destructured parameter bindings), and catch-clause parameters. Not governed: object property keys, class/interface/type/enum names and enum members, class method and property names, and imported bindings.",
+  "interpretation": "A declared variable or function name conforms if it is camelCase: after stripping any leading underscores or dollar signs it starts with a lowercase letter and contains no underscores or hyphens (digits and further capital letters are allowed, e.g. userId, parseHtml2). snake_case (retry_count), PascalCase (GetUserName) and any lowercase name containing an underscore violate. One edge exception follows the common constant convention: a const binding written entirely in SCREAMING_SNAKE_CASE (DEFAULT_TIMEOUT_MS) is accepted as a constant, not a violation. Names that are not declared by the code (property keys like first_name in an object literal, type fields, names that only appear in strings or comments) are not instances, so snake_case there does not violate. A file whose only declarations are types, interfaces and enums is NOT_APPLICABLE. A file is SATISFIED if it declares at least one governed binding and all conform, VIOLATED if any one does not.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inapp_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inapp_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\b(?:const|let|var|function)\\s+(?!_*[A-Z][A-Z0-9_]*\\b)_*(?:[A-Z]|[A-Za-z0-9$]+_)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "ho_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "ho_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "ho_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\b(?:const|let|var|function)\\s+(?!_*[A-Z][A-Z0-9_]*\\b)_*(?:[A-Z]|[A-Za-z0-9$]+_)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\b(?:const|let|var|function)\\s+[a-z][a-z0-9]*_[a-z0-9_]*",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

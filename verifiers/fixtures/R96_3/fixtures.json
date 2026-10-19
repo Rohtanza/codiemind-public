@@ -1,0 +1,22 @@
+{
+  "rule_id": "R96_3", "target": "ts", "tier": "T3",
+  "governed_construct": "One call of the method `get` on a receiver whose type is `vscode.WorkspaceConfiguration` (the object returned by `workspace.getConfiguration(...)` imported from the 'vscode' module, whether chained directly, held in a variable, passed as a typed parameter, or reached through an aliased/namespace/require import). Calls of `get` on any other receiver (Map, user-defined classes, local functions that happen to be named getConfiguration) are not instances.",
+  "interpretation": "The rule asks that reads of VS Code settings go through the configuration API with a proper default and with validation rather than blind trust. I read 'proper defaults' as the decidable core: every `WorkspaceConfiguration.get(key, ...)` call must pass the second, default-value argument, so the call can never yield undefined; a fallback applied afterwards (`?? 5000`) does not count because the API's own default parameter was not used. I read 'validation' negatively and decidably: the value returned by `get` must not be type-asserted on the spot (the get call itself as the operand of an `as T` / `<T>` assertion or a non-null `!` assertion), because an assertion replaces validation with a claim; asserting a value later, after it has been checked (e.g. `includes(value) ? (value as Mode) : 'auto'`), is fine. Whether the subsequent validation logic is semantically adequate is not judged. A file is SATISFIED when it has at least one governed get call and every one passes a default and is not directly asserted; VIOLATED when any governed get call lacks a default or is directly asserted; NOT_APPLICABLE when it has no get call on a WorkspaceConfiguration (e.g. a command-only extension, or only Map.get calls). Deciding which `get` calls are governed requires knowing the receiver's type/binding back to the 'vscode' import, which is why the rule is T3: a syntactic query cannot distinguish `cache.get(k)` or a user class's `getConfiguration(name).get(k)` from a real configuration read.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.ts", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.ts", "expected": "VIOLATED"},
+    {"id": "inapp_01", "set": "dev", "kind": "inapplicable", "file": "dev/inapp_01.ts", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.ts", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression[arguments.length=1] > PropertyAccessExpression[name.name=\"get\"]", "match_means": "VIOLATED"}},
+    {"id": "h_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/h_pos_01.js", "expected": "SATISFIED"},
+    {"id": "h_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/h_pos_02.ts", "expected": "SATISFIED"},
+    {"id": "h_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/h_neg_01.js", "expected": "VIOLATED"},
+    {"id": "h_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/h_neg_02.ts", "expected": "VIOLATED"},
+    {"id": "h_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/h_adv_01.ts", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression[arguments.length=1] > PropertyAccessExpression[name.name=\"get\"][expression.expression.name.name=\"getConfiguration\"]", "match_means": "VIOLATED"}}
+  ]
+}

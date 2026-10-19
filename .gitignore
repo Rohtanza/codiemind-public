@@ -1,0 +1,10 @@
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+.env
+.codiemind/
+.pytest_cache/
+harness/runs/
+harness/out/
+extension/out/

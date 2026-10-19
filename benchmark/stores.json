@@ -1,0 +1,726 @@
+{
+ "seed": 20261020,
+ "sizes": [
+  10,
+  30,
+  60,
+  120
+ ],
+ "rule": "store n = target + ballast ranks 1..n-1 (nested, identical for every case)",
+ "ballast": [
+  {
+   "ballast_rank": 1,
+   "source_rule_id": "R74_321",
+   "tier": "T5",
+   "text": "Use memo for performance optimization."
+  },
+  {
+   "ballast_rank": 2,
+   "source_rule_id": "R81_24",
+   "tier": "T4",
+   "text": "Use UnoCSS. https://unocss.dev/"
+  },
+  {
+   "ballast_rank": 3,
+   "source_rule_id": "R4_38",
+   "tier": "T5",
+   "text": "Always prioritize accuracy in temporal references to maintain project integrity and ensure clear communication among all stakeholders."
+  },
+  {
+   "ballast_rank": 4,
+   "source_rule_id": "R80_18",
+   "tier": "T4",
+   "text": "Organize imports into groups: standard library, third-party, and local imports."
+  },
+  {
+   "ballast_rank": 5,
+   "source_rule_id": "R45_32",
+   "tier": "T5",
+   "text": "PROFESSIONAL polish with no contradictions"
+  },
+  {
+   "ballast_rank": 6,
+   "source_rule_id": "R67_23",
+   "tier": "T4",
+   "text": "Strict type checking enabled"
+  },
+  {
+   "ballast_rank": 7,
+   "source_rule_id": "R74_272",
+   "tier": "T5",
+   "text": "Implement structured error handling with context."
+  },
+  {
+   "ballast_rank": 8,
+   "source_rule_id": "R45_58",
+   "tier": "T5",
+   "text": "Consistency First: All prompts must produce consistent output structure"
+  },
+  {
+   "ballast_rank": 9,
+   "source_rule_id": "R32_320",
+   "tier": "T5",
+   "text": "Integration Tests: Test complete request/response flow"
+  },
+  {
+   "ballast_rank": 10,
+   "source_rule_id": "R79_24",
+   "tier": "T4",
+   "text": "XML documentation generation is required."
+  },
+  {
+   "ballast_rank": 11,
+   "source_rule_id": "R38_54",
+   "tier": "T5",
+   "text": "Navigation Performance: Sub-200ms navigation between screens."
+  },
+  {
+   "ballast_rank": 12,
+   "source_rule_id": "R63_26",
+   "tier": "T5",
+   "text": "Handle API rate limits and network issues gracefully"
+  },
+  {
+   "ballast_rank": 13,
+   "source_rule_id": "R10_95",
+   "tier": "T5",
+   "text": "Implementation: Apply patterns with proper attribution and version compatibility"
+  },
+  {
+   "ballast_rank": 14,
+   "source_rule_id": "R94_65",
+   "tier": "T5",
+   "text": "Security Documentation must provide detailed implementation of authentication and authorization."
+  },
+  {
+   "ballast_rank": 15,
+   "source_rule_id": "R94_652",
+   "tier": "T5",
+   "text": "For complex systems, document dependencies in a dedicated section."
+  },
+  {
+   "ballast_rank": 16,
+   "source_rule_id": "R89_49",
+   "tier": "T5",
+   "text": "Error Handling: Comprehensive error handling with proper logging"
+  },
+  {
+   "ballast_rank": 17,
+   "source_rule_id": "R74_373",
+   "tier": "T5",
+   "text": "Avoid unnecessary useState or useEffect for class toggling; prefer useMemo where applicable"
+  },
+  {
+   "ballast_rank": 18,
+   "source_rule_id": "R32_79",
+   "tier": "T5",
+   "text": "Do not store credentials; use only for authentication input"
+  },
+  {
+   "ballast_rank": 19,
+   "source_rule_id": "R32_319",
+   "tier": "T5",
+   "text": "Middleware Tests: Test middleware in isolation"
+  },
+  {
+   "ballast_rank": 20,
+   "source_rule_id": "R35_114",
+   "tier": "T5",
+   "text": "Korean Input Support (Ensure proper Korean input handling)."
+  },
+  {
+   "ballast_rank": 21,
+   "source_rule_id": "R94_106",
+   "tier": "T5",
+   "text": "The Memory Bank file 'productContext.md' must be updated with the final business context, business value delivered, and links to requirements documentation."
+  },
+  {
+   "ballast_rank": 22,
+   "source_rule_id": "R91_19",
+   "tier": "T5",
+   "text": "All data must be encrypted at rest and in transit"
+  },
+  {
+   "ballast_rank": 23,
+   "source_rule_id": "R94_2",
+   "tier": "T5",
+   "text": "Architecture must anticipate future requirements and facilitate change."
+  },
+  {
+   "ballast_rank": 24,
+   "source_rule_id": "R10_269",
+   "tier": "T5",
+   "text": "Non-Negotiable Standards: Establish minimum quality thresholds that cannot be compromised"
+  },
+  {
+   "ballast_rank": 25,
+   "source_rule_id": "R80_34",
+   "tier": "T4",
+   "text": "Use Docker for containerization with multi-stage builds."
+  },
+  {
+   "ballast_rank": 26,
+   "source_rule_id": "R94_35",
+   "tier": "T5",
+   "text": "The System Overview must include a summary of the architecture, including diagrams, patterns, and key design decisions."
+  },
+  {
+   "ballast_rank": 27,
+   "source_rule_id": "R8_9",
+   "tier": "T4",
+   "text": "Implementation files should be accompanied by test files."
+  },
+  {
+   "ballast_rank": 28,
+   "source_rule_id": "R35_79",
+   "tier": "T5",
+   "text": "Follow REST API conventions"
+  },
+  {
+   "ballast_rank": 29,
+   "source_rule_id": "R35_78",
+   "tier": "T5",
+   "text": "Use meaningful variable and method names"
+  },
+  {
+   "ballast_rank": 30,
+   "source_rule_id": "R2_191",
+   "tier": "T5",
+   "text": "Network should be Optimized for minimal bandwidth usage."
+  },
+  {
+   "ballast_rank": 31,
+   "source_rule_id": "R94_282",
+   "tier": "T5",
+   "text": "All dependency versions must be compatible."
+  },
+  {
+   "ballast_rank": 32,
+   "source_rule_id": "R84_5",
+   "tier": "T5",
+   "text": "The code must run as expected on the first try."
+  },
+  {
+   "ballast_rank": 33,
+   "source_rule_id": "R45_3",
+   "tier": "T5",
+   "text": "LLM Service Pattern: class LLMService { async generateText(prompt: string, systemPrompt: string, options: any) { ... } } should use provider priority system with fallback."
+  },
+  {
+   "ballast_rank": 34,
+   "source_rule_id": "R4_44",
+   "tier": "T5",
+   "text": "Define technical terms and acronyms"
+  },
+  {
+   "ballast_rank": 35,
+   "source_rule_id": "R4_11",
+   "tier": "T5",
+   "text": "Use clear, descriptive filenames that indicate the rule's purpose."
+  },
+  {
+   "ballast_rank": 36,
+   "source_rule_id": "R17_120",
+   "tier": "T5",
+   "text": "Write benchmarks for performance-critical code"
+  },
+  {
+   "ballast_rank": 37,
+   "source_rule_id": "R35_80",
+   "tier": "T5",
+   "text": "Implement proper validation on all inputs"
+  },
+  {
+   "ballast_rank": 38,
+   "source_rule_id": "R32_435",
+   "tier": "T5",
+   "text": "Include realistic examples for all parameters in documentation."
+  },
+  {
+   "ballast_rank": 39,
+   "source_rule_id": "R83_5",
+   "tier": "T4",
+   "text": "Follow the standard Next.js App Router structure: /app for routes and pages, /components/ui for shadcn/ui components, /components/ for custom, reusable components, and /lib for Supabase client setup, utility functions, and Server Actions."
+  },
+  {
+   "ballast_rank": 40,
+   "source_rule_id": "R10_253",
+   "tier": "T5",
+   "text": "Structured Data: Use consistent, machine-readable formats for automated analysis"
+  },
+  {
+   "ballast_rank": 41,
+   "source_rule_id": "R63_25",
+   "tier": "T5",
+   "text": "Tests must clean up any created resources"
+  },
+  {
+   "ballast_rank": 42,
+   "source_rule_id": "R29_102",
+   "tier": "T5",
+   "text": "Edge case handling implemented."
+  },
+  {
+   "ballast_rank": 43,
+   "source_rule_id": "R80_5",
+   "tier": "T5",
+   "text": "Proper HTTP status codes and error handling."
+  },
+  {
+   "ballast_rank": 44,
+   "source_rule_id": "R94_496",
+   "tier": "T5",
+   "text": "Document the fix immediately after implementation while it is fresh in your mind, focusing on what, why, and how, and be specific about the changes made."
+  },
+  {
+   "ballast_rank": 45,
+   "source_rule_id": "R43_75",
+   "tier": "T5",
+   "text": "Use semantic HTML to structure content."
+  },
+  {
+   "ballast_rank": 46,
+   "source_rule_id": "R72_84",
+   "tier": "T5",
+   "text": "Use constants to manage constants values."
+  },
+  {
+   "ballast_rank": 47,
+   "source_rule_id": "R74_145",
+   "tier": "T4",
+   "text": "Unit tests should typically be placed alongside the code files they are testing."
+  },
+  {
+   "ballast_rank": 48,
+   "source_rule_id": "R74_301",
+   "tier": "T5",
+   "text": "Use proper cache policies"
+  },
+  {
+   "ballast_rank": 49,
+   "source_rule_id": "R8_8",
+   "tier": "T5",
+   "text": "Related functionality should be grouped in the same package."
+  },
+  {
+   "ballast_rank": 50,
+   "source_rule_id": "R4_208",
+   "tier": "T5",
+   "text": "Consider JavaScript animation libraries (like Framer Motion, GSAP, or Lottie) for more complex sequences."
+  },
+  {
+   "ballast_rank": 51,
+   "source_rule_id": "R19_186",
+   "tier": "T4",
+   "text": "Use dotenv: For environment variable management"
+  },
+  {
+   "ballast_rank": 52,
+   "source_rule_id": "R21_27",
+   "tier": "T4",
+   "text": "review the code base to ensure it is clean and organized, removing empty files, folders, and files that are no longer used."
+  },
+  {
+   "ballast_rank": 53,
+   "source_rule_id": "R88_40",
+   "tier": "T5",
+   "text": "Optimize asset loading with progressive loading techniques and asset compression."
+  },
+  {
+   "ballast_rank": 54,
+   "source_rule_id": "R31_2",
+   "tier": "T5",
+   "text": "When creating design file: Build one single html page of just one screen to build a design based on users' feedback/task"
+  },
+  {
+   "ballast_rank": 55,
+   "source_rule_id": "R74_400",
+   "tier": "T5",
+   "text": "Implement safeguards in automated scripts."
+  },
+  {
+   "ballast_rank": 56,
+   "source_rule_id": "R72_78",
+   "tier": "T5",
+   "text": "Controller always takes methods as input and updates the UI state that effects the UI."
+  },
+  {
+   "ballast_rank": 57,
+   "source_rule_id": "R29_142",
+   "tier": "T5",
+   "text": "NOT testing implementation details instead of behavior."
+  },
+  {
+   "ballast_rank": 58,
+   "source_rule_id": "R2_89",
+   "tier": "T5",
+   "text": "User-friendly error messages"
+  },
+  {
+   "ballast_rank": 59,
+   "source_rule_id": "R25_176",
+   "tier": "T5",
+   "text": "Keep dependencies updated"
+  },
+  {
+   "ballast_rank": 60,
+   "source_rule_id": "R18_91",
+   "tier": "T4",
+   "text": "E2E tests are written in the tests/e2e/ directory."
+  },
+  {
+   "ballast_rank": 61,
+   "source_rule_id": "R72_122",
+   "tier": "T5",
+   "text": "Address any technical debt introduced by new features."
+  },
+  {
+   "ballast_rank": 62,
+   "source_rule_id": "R10_140",
+   "tier": "T5",
+   "text": "Accessibility must meet WCAG 2.1 AA compliance minimum"
+  },
+  {
+   "ballast_rank": 63,
+   "source_rule_id": "R91_7",
+   "tier": "T5",
+   "text": "HTTP methods must be used appropriately (GET, POST, PUT, DELETE)"
+  },
+  {
+   "ballast_rank": 64,
+   "source_rule_id": "R17_67",
+   "tier": "T5",
+   "text": "Error Handling Location: Handle errors at the appropriate level."
+  },
+  {
+   "ballast_rank": 65,
+   "source_rule_id": "R43_29",
+   "tier": "T5",
+   "text": "Each function should do exactly one thing"
+  },
+  {
+   "ballast_rank": 66,
+   "source_rule_id": "R38_36",
+   "tier": "T5",
+   "text": "Support browser-style navigation (forward/back)."
+  },
+  {
+   "ballast_rank": 67,
+   "source_rule_id": "R10_229",
+   "tier": "T5",
+   "text": "High Cohesion: Related functionality should be grouped together logically"
+  },
+  {
+   "ballast_rank": 68,
+   "source_rule_id": "R74_385",
+   "tier": "T5",
+   "text": "Sanitize any dynamic Tailwind class concatenation to prevent injection attacks"
+  },
+  {
+   "ballast_rank": 69,
+   "source_rule_id": "R84_21",
+   "tier": "T5",
+   "text": "Implement proper error logging and user-friendly messages."
+  },
+  {
+   "ballast_rank": 70,
+   "source_rule_id": "R94_89",
+   "tier": "T5",
+   "text": "Operational Documentation must include a disaster recovery plan and procedures."
+  },
+  {
+   "ballast_rank": 71,
+   "source_rule_id": "R15_10",
+   "tier": "T4",
+   "text": "Server tests are located in __tests__/ directories alongside source code."
+  },
+  {
+   "ballast_rank": 72,
+   "source_rule_id": "R60_82",
+   "tier": "T5",
+   "text": "Cross-Platform: Compatible file paths and assumptions"
+  },
+  {
+   "ballast_rank": 73,
+   "source_rule_id": "R32_302",
+   "tier": "T5",
+   "text": "Error Mapping: Map domain errors to appropriate HTTP responses"
+  },
+  {
+   "ballast_rank": 74,
+   "source_rule_id": "R32_267",
+   "tier": "T4",
+   "text": "Migration Naming Convention - Sequence: 3-digit zero-padded numbers (001, 002, 003...)"
+  },
+  {
+   "ballast_rank": 75,
+   "source_rule_id": "R26_197",
+   "tier": "T5",
+   "text": "Keep examples synchronized with code"
+  },
+  {
+   "ballast_rank": 76,
+   "source_rule_id": "R74_99",
+   "tier": "T5",
+   "text": "Use appropriate memory and timeout settings"
+  },
+  {
+   "ballast_rank": 77,
+   "source_rule_id": "R43_42",
+   "tier": "T5",
+   "text": "Fix technical debt early"
+  },
+  {
+   "ballast_rank": 78,
+   "source_rule_id": "R4_46",
+   "tier": "T5",
+   "text": "Separate instructions from explanations"
+  },
+  {
+   "ballast_rank": 79,
+   "source_rule_id": "R29_147",
+   "tier": "T5",
+   "text": "Mocks used for external dependencies."
+  },
+  {
+   "ballast_rank": 80,
+   "source_rule_id": "R74_132",
+   "tier": "T5",
+   "text": "The task list should guide a developer through implementation."
+  },
+  {
+   "ballast_rank": 81,
+   "source_rule_id": "R74_338",
+   "tier": "T5",
+   "text": "Implement proper view modifiers"
+  },
+  {
+   "ballast_rank": 82,
+   "source_rule_id": "R25_130",
+   "tier": "T5",
+   "text": "Log errors with appropriate detail"
+  },
+  {
+   "ballast_rank": 83,
+   "source_rule_id": "R5_40",
+   "tier": "T4",
+   "text": "Changeset file names should be kebab-case and use the format: `descriptive-name.md`."
+  },
+  {
+   "ballast_rank": 84,
+   "source_rule_id": "R32_230",
+   "tier": "T5",
+   "text": "Separate business errors (controlled errors) from internal errors (traceable)."
+  },
+  {
+   "ballast_rank": 85,
+   "source_rule_id": "R72_5",
+   "tier": "T5",
+   "text": "Let TypeScript infer types when obvious."
+  },
+  {
+   "ballast_rank": 86,
+   "source_rule_id": "R25_187",
+   "tier": "T5",
+   "text": "Enable logging and monitoring"
+  },
+  {
+   "ballast_rank": 87,
+   "source_rule_id": "R79_21",
+   "tier": "T4",
+   "text": "Use StyleCop.Analyzers for code style enforcement."
+  },
+  {
+   "ballast_rank": 88,
+   "source_rule_id": "R74_161",
+   "tier": "T5",
+   "text": "Use proper image loading."
+  },
+  {
+   "ballast_rank": 89,
+   "source_rule_id": "R44_142",
+   "tier": "T4",
+   "text": "Implement theme testing using GScan"
+  },
+  {
+   "ballast_rank": 90,
+   "source_rule_id": "R74_337",
+   "tier": "T5",
+   "text": "Use ViewBuilder for complex layouts"
+  },
+  {
+   "ballast_rank": 91,
+   "source_rule_id": "R94_601",
+   "tier": "T4",
+   "text": "The goal is to create a comprehensive `memory-bank/reflection/reflection-[feature_id].md` document."
+  },
+  {
+   "ballast_rank": 92,
+   "source_rule_id": "R94_510",
+   "tier": "T4",
+   "text": "Verify reflection is complete by ensuring all checklist items are YES: implementation reviewed, all sections completed, reflection.md created, and tasks.md updated."
+  },
+  {
+   "ballast_rank": 93,
+   "source_rule_id": "R35_33",
+   "tier": "T5",
+   "text": "Resend Functionality: Allow users to request new codes"
+  },
+  {
+   "ballast_rank": 94,
+   "source_rule_id": "R94_258",
+   "tier": "T5",
+   "text": "Provide clear and timely feedback for user actions."
+  },
+  {
+   "ballast_rank": 95,
+   "source_rule_id": "R63_4",
+   "tier": "T5",
+   "text": "Each component has one clear purpose"
+  },
+  {
+   "ballast_rank": 96,
+   "source_rule_id": "R32_266",
+   "tier": "T4",
+   "text": "Migration Naming Convention - Example: `001_create_users.up.sql`"
+  },
+  {
+   "ballast_rank": 97,
+   "source_rule_id": "R74_360",
+   "tier": "T5",
+   "text": "Prefer data- attributes over className overrides for state-based styling"
+  },
+  {
+   "ballast_rank": 98,
+   "source_rule_id": "R4_51",
+   "tier": "T5",
+   "text": "Use appropriate heading levels (# for title, ## for sections, etc.)"
+  },
+  {
+   "ballast_rank": 99,
+   "source_rule_id": "R60_62",
+   "tier": "T5",
+   "text": "Use `expect.soft()` for optional/transient element checks"
+  },
+  {
+   "ballast_rank": 100,
+   "source_rule_id": "R17_141",
+   "tier": "T4",
+   "text": "Unit tests must pass: make test-unit"
+  },
+  {
+   "ballast_rank": 101,
+   "source_rule_id": "R10_281",
+   "tier": "T5",
+   "text": "Privacy Protection: Respect user privacy and data protection requirements"
+  },
+  {
+   "ballast_rank": 102,
+   "source_rule_id": "R19_19",
+   "tier": "T5",
+   "text": "Use middleware for common functionality (auth, logging, etc.)"
+  },
+  {
+   "ballast_rank": 103,
+   "source_rule_id": "R29_182",
+   "tier": "T5",
+   "text": "Mocks are properly configured."
+  },
+  {
+   "ballast_rank": 104,
+   "source_rule_id": "R17_8",
+   "tier": "T5",
+   "text": "Avoid unnecessary re-renders and computations"
+  },
+  {
+   "ballast_rank": 105,
+   "source_rule_id": "R88_75",
+   "tier": "T4",
+   "text": "Set up automated builds and testing in the CI/CD pipeline"
+  },
+  {
+   "ballast_rank": 106,
+   "source_rule_id": "R32_484",
+   "tier": "T5",
+   "text": "Return domain-meaningful errors, not infrastructure or storage errors"
+  },
+  {
+   "ballast_rank": 107,
+   "source_rule_id": "R44_150",
+   "tier": "T5",
+   "text": "Follow Ghost's Theme API documentation"
+  },
+  {
+   "ballast_rank": 108,
+   "source_rule_id": "R88_06",
+   "tier": "T5",
+   "text": "No loading screen is to be used in the game."
+  },
+  {
+   "ballast_rank": 109,
+   "source_rule_id": "R52_2",
+   "tier": "T5",
+   "text": "Give each component a single clear responsibility.."
+  },
+  {
+   "ballast_rank": 110,
+   "source_rule_id": "R4_198",
+   "tier": "T5",
+   "text": "Use a color palette with a bright primary color, a contrasting secondary color, and a neutral gray."
+  },
+  {
+   "ballast_rank": 111,
+   "source_rule_id": "R94_488",
+   "tier": "T5",
+   "text": "Ensure the fix can be easily found later."
+  },
+  {
+   "ballast_rank": 112,
+   "source_rule_id": "R19_66",
+   "tier": "T5",
+   "text": "Optimize database queries"
+  },
+  {
+   "ballast_rank": 113,
+   "source_rule_id": "R32_347",
+   "tier": "T4",
+   "text": "Interface placement: Define repository interfaces in the internal/repository package for consistency and discoverability."
+  },
+  {
+   "ballast_rank": 114,
+   "source_rule_id": "R71_98",
+   "tier": "T5",
+   "text": "Generate short-lived signed URLs for private files."
+  },
+  {
+   "ballast_rank": 115,
+   "source_rule_id": "R94_222",
+   "tier": "T5",
+   "text": "In an Architecture Decision Record, the final decision must be documented, including the chosen option, rationale, and implementation considerations."
+  },
+  {
+   "ballast_rank": 116,
+   "source_rule_id": "R10_178",
+   "tier": "T5",
+   "text": "Code must be self-documenting and clear"
+  },
+  {
+   "ballast_rank": 117,
+   "source_rule_id": "R25_127",
+   "tier": "T5",
+   "text": "Use specific exception types"
+  },
+  {
+   "ballast_rank": 118,
+   "source_rule_id": "R25_171",
+   "tier": "T5",
+   "text": "Never hardcode secrets, API keys, or passwords"
+  },
+  {
+   "ballast_rank": 119,
+   "source_rule_id": "R94_16",
+   "tier": "T5",
+   "text": "Document and evaluate architectural alternatives."
+  }
+ ]
+}

@@ -1,0 +1,110 @@
+{
+  "rule_id": "R39_44",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A rendered chart component (JSX element) whose binding resolves to a value export of a charting library (react-native-svg-charts, react-native-chart-kit, victory/victory-native, recharts, react-native-gifted-charts, ...), used to plot time/duration distribution data. Each such JSX element is one instance; type-only imports from charting libraries and non-chart code are not instances.",
+  "interpretation": "The rule asks that time-distribution charts be drawn with react-native-svg-charts. Within one file, every JSX element that renders a component bound to a charting-library value export is an instance; it conforms iff that binding resolves to react-native-svg-charts (named, aliased or namespace import, including its axes/grid/progress components). An instance bound to any other charting library (via import, alias, namespace, or TS import-equals/require) is VIOLATED, even if svg-charts is also used in the same file. Files that only compute or format time data with no chart are NOT_APPLICABLE. Importing a TYPE (e.g. ChartConfig) from another chart library without rendering its components does not violate the rule, since no chart is drawn with it; deciding whether an imported name is a type or a value needs type information, as does resolving which module a JSX tag is bound to. All fixtures plot time data, so the 'time distribution' qualifier is held constant rather than judged.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.jsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.tsx",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "ImportDeclaration:not([importClause.isTypeOnly=true]) > StringLiteral[value=/^(victory|victory-native|react-native-chart-kit|recharts|react-native-gifted-charts)(\\/|$)/]",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.jsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.jsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.tsx",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": ":matches(ImportDeclaration, CallExpression[expression.name=\"require\"]) > StringLiteral[value=/^(victory|victory-native|react-native-chart-kit|recharts|react-native-gifted-charts)(\\/|$)/]",
+        "match_means": "VIOLATED"
+      }
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "rule_id": "R57_143",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "A module specifier string that imports an external dependency: the source string of an import declaration (including `import type`), an export-from declaration (`export ... from` / `export * from`), or a dynamic `import()` call, whose value is not a relative or absolute path (does not start with `./`, `../` or `/`). Relative/absolute local-file imports are not instances.",
+  "interpretation": "The rule (Deno-style) forbids bare package specifiers for external dependencies: every external dependency must be written with an `npm:` or `jsr:` prefix. An instance is the module specifier of any import declaration, type-only import, re-export (`export ... from`), or dynamic `import()` that names an external package rather than a local file. It conforms if it starts with `npm:` or `jsr:`; a bare package name such as `zod`, `cors` or `@supabase/supabase-js` violates, whether imported for values or only for types, statically or dynamically. Local imports (`./`, `../`, `/`) are not instances, so a file importing only local modules is NOT_APPLICABLE. Mentions of bare imports inside comments or string literals are not imports and are ignored. Edge decisions not exercised by the fixtures: `node:` built-in specifiers and full URL specifiers (`https://...`) are not bare specifiers and are treated as not violating; `require()` calls, if present, would be treated like dynamic imports.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bfrom\\s*|\\bimport\\s*\\(?\\s*|\\brequire\\s*\\(\\s*)[\"'](?!\\.{1,2}/|/|npm:|jsr:|node:|https?:)[^\"'\\s]+[\"']",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "(?:\\bfrom\\s*|\\bimport\\s*\\(?\\s*|\\brequire\\s*\\(\\s*)[\"'](?!\\.{1,2}/|/|npm:|jsr:|node:|https?:)[^\"'\\s]+[\"']",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "from\\s+[\"'](?!npm:|jsr:|\\.|/)",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

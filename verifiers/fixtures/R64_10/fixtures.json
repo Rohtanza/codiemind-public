@@ -1,0 +1,22 @@
+{
+  "rule_id": "R64_10", "target": "ts", "tier": "T3",
+  "governed_construct": "Every typed position in the unit: each function/method/arrow parameter, each variable/property/class-member declaration, each function return, each type annotation and each type assertion. One instance is one such position; its verdict is decided by the type the TypeScript checker assigns to it.",
+  "interpretation": "The rule asks that every value's type be statically known and never `any`. An instance is VIOLATED if its type is `any`, whether written explicitly (`: any`, `any[]`, `Promise<any>`, `as any`) or obtained implicitly: a parameter with no annotation and no contextual type (implicit any, including untyped JavaScript parameters), or a declaration whose inferred type is `any` (e.g. `const x = JSON.parse(s)`). An instance conforms if it is explicitly annotated with a non-any type, or if its type is a non-any type supplied by inference that the checker resolves (a contextually typed callback parameter such as `orders.map((order) => ...)` over a typed array, or a variable initialised from a typed expression). `unknown` is a conforming explicit type. Omitted return-type annotations are not by themselves violations; positive fixtures annotate them anyway. Mentions of `any` in comments or strings are not instances. A unit with no declarations, parameters, annotations or assertions (only statements such as top-level calls with literal arguments) is NOT_APPLICABLE.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.ts", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.js", "expected": "VIOLATED"},
+    {"id": "na_01", "set": "dev", "kind": "inapplicable", "file": "dev/na_01.ts", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.ts", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "AnyKeyword, Parameter:not([type])", "match_means": "VIOLATED"}},
+    {"id": "ho_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "ho_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "ho_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "ho_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "ho_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.ts", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T2", "check": "AnyKeyword, Parameter:not([type])", "match_means": "VIOLATED"}}
+  ]
+}

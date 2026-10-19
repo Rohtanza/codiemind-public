@@ -1,0 +1,110 @@
+{
+  "rule_id": "R74_85",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A data-storage use in the file: an import (or require) of a database / persistent-storage client module whose bindings are used as values (Firestore: firebase/firestore, firebase-admin/firestore, @google-cloud/firestore; other stores: firebase/database, mongoose, mongodb, pg, mysql2, redis, @supabase/supabase-js, etc.), or a call on the browser Web Storage globals localStorage / sessionStorage / indexedDB when those names are bound to the actual globals.",
+  "interpretation": "The rule asks that application data be stored in Firestore. A file is SATISFIED when it performs data storage and every storage use goes through Firestore (client SDK, Admin SDK, or @google-cloud/firestore, including real-time listeners such as onSnapshot). It is VIOLATED when any data is stored or read through a different store: another database (MongoDB/Mongoose, Postgres, Supabase, Redis, ...), the Firebase Realtime Database (firebase/database is not Firestore), or browser Web Storage used as the persistence layer. It is NOT_APPLICABLE when the file performs no data storage at all. Edge decisions: an import from a non-Firestore store whose bindings are used only in type positions (e.g. DataSnapshot as a parameter annotation) is not a storage use; an identifier spelled localStorage/sessionStorage that is bound to a local parameter or variable (e.g. a Firestore-backed wrapper) is not the Web Storage global; comments and strings mentioning other stores are irrelevant. Deciding these requires binding resolution, hence T3.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "ImportDeclaration[moduleSpecifier.text=/^(firebase\\/database|mongoose|mongodb|pg|mysql2|redis|ioredis|@supabase\\/supabase-js)$/]",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/h_pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/h_pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/h_neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/h_neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/h_adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "PropertyAccessExpression > Identifier[name=/^(localStorage|sessionStorage|indexedDB)$/]",
+        "match_means": "VIOLATED"
+      }
+    }
+  ]
+}

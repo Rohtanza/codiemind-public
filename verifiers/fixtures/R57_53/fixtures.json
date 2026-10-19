@@ -1,0 +1,123 @@
+{
+  "rule_id": "R57_53",
+  "target": "ts",
+  "tier": "T3",
+  "governed_construct": "A 'use client' directive: a string-literal expression statement \"use client\" in the file's directive prologue (top of module). One file with such a directive is one instance; files without it are NOT_APPLICABLE.",
+  "interpretation": "The rule permits the 'use client' directive only when the module actually needs browser Web APIs. The directive conforms (SATISFIED) when the file references at least one browser Web API global that resolves to the ambient DOM/browser declaration (window, document, localStorage, sessionStorage, navigator, location, history, matchMedia, IntersectionObserver, ResizeObserver, etc.), not to a local declaration, parameter, destructured prop or import. It is VIOLATED when the file has the directive but no such reference: purely presentational components, pure utility modules, and files where a Web-API name is merely mentioned in a comment or string or is bound to something else (an imported 'document' helper, a prop named 'location'). React hooks or event handlers alone are not treated as Web API needs; the rule names Web APIs specifically. Files with no 'use client' directive are NOT_APPLICABLE regardless of content. Because deciding whether an identifier such as document or location refers to the browser global requires binding resolution, the rule is T3.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "na_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/na_01.tsx",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.tsx",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "SourceFile:has(ExpressionStatement > StringLiteral[value=\"use client\"]):not(:has(Identifier[name=/^(window|document|localStorage|sessionStorage|navigator|location|history|matchMedia|IntersectionObserver|ResizeObserver|MutationObserver|requestAnimationFrame|addEventListener|alert|confirm|Notification|indexedDB|globalThis)$/]))",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.tsx",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.tsx",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.tsx",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "SourceFile:has(ExpressionStatement > StringLiteral[value=\"use client\"]):not(:has(Identifier[name=/^(window|document|localStorage|sessionStorage|navigator|location|history|matchMedia|IntersectionObserver|ResizeObserver|MutationObserver|requestAnimationFrame|addEventListener|alert|confirm|Notification|indexedDB|globalThis)$/]))",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.tsx",
+      "expected": "VIOLATED",
+      "lower_check": {
+        "check_tier": "T2",
+        "check": "SourceFile:has(ExpressionStatement > StringLiteral[text=\"use client\"]):not(:has(Identifier[name=/^(window|document|navigator|localStorage|sessionStorage)$/]))",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "rule_id": "R38_129", "target": "ts", "tier": "T3",
+  "governed_construct": "One instance per dependency-acquisition site in the file: (a) each class decorated with `@injectable()` (receives dependencies by constructor injection; conforming), and (b) each call that resolves a dependency through the `getIt` service locator, i.e. a call to, or a method call on, a binding imported/required as the export `getIt` from the project's DI container module (whatever local alias it is bound to); calls to unrelated local functions or variables that merely happen to be named `getIt` are not instances.",
+  "interpretation": "The rule asks that dependencies be supplied through decorator-driven constructor injection (`@injectable()` from tsyringe/inversify) rather than pulled from the `getIt` service locator. A file is VIOLATED if it contains any call that goes through the service-locator binding (`getIt<T>()`, `getIt.get<T>(...)`, or the same through an aliased import such as `import { getIt as locator }`), even if the file also has `@injectable` classes. It is SATISFIED if it has at least one `@injectable` class and no service-locator call. Mentions of `getIt` in comments or strings, and calls to a locally declared function named `getIt` that is not bound to the DI container, do not count. Files with neither injectable classes nor locator calls are NOT_APPLICABLE. Because the identity of `getIt` depends on its binding (import vs local declaration vs alias), the rule is T3.",
+  "fixtures": [
+    {"id": "pos_01", "set": "dev", "kind": "positive", "file": "dev/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "pos_02", "set": "dev", "kind": "positive", "file": "dev/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "pos_03", "set": "dev", "kind": "positive", "file": "dev/pos_03.ts", "expected": "SATISFIED"},
+    {"id": "neg_01", "set": "dev", "kind": "negative", "file": "dev/neg_01.ts", "expected": "VIOLATED"},
+    {"id": "neg_02", "set": "dev", "kind": "negative", "file": "dev/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "neg_03", "set": "dev", "kind": "negative", "file": "dev/neg_03.tsx", "expected": "VIOLATED"},
+    {"id": "inap_01", "set": "dev", "kind": "inapplicable", "file": "dev/inap_01.ts", "expected": "NOT_APPLICABLE"},
+    {"id": "adv_01", "set": "dev", "kind": "adversarial", "file": "dev/adv_01.ts", "expected": "VIOLATED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression > Identifier[name=\"getIt\"], CallExpression > PropertyAccessExpression > Identifier[name=\"getIt\"]", "match_means": "VIOLATED"}},
+    {"id": "h_pos_01", "set": "heldout", "kind": "positive", "file": "heldout/pos_01.ts", "expected": "SATISFIED"},
+    {"id": "h_pos_02", "set": "heldout", "kind": "positive", "file": "heldout/pos_02.ts", "expected": "SATISFIED"},
+    {"id": "h_neg_01", "set": "heldout", "kind": "negative", "file": "heldout/neg_01.js", "expected": "VIOLATED"},
+    {"id": "h_neg_02", "set": "heldout", "kind": "negative", "file": "heldout/neg_02.ts", "expected": "VIOLATED"},
+    {"id": "h_adv_01", "set": "heldout", "kind": "adversarial", "file": "heldout/adv_01.ts", "expected": "SATISFIED",
+      "lower_check": {"check_tier": "T2", "check": "CallExpression > Identifier[name=\"getIt\"], CallExpression > PropertyAccessExpression > Identifier[name=\"getIt\"]", "match_means": "VIOLATED"}}
+  ]
+}

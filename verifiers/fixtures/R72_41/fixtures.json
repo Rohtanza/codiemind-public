@@ -1,0 +1,123 @@
+{
+  "rule_id": "R72_41",
+  "target": "ts",
+  "tier": "T2",
+  "governed_construct": "Each named function in the file: a function declaration (including async and generator declarations), a function or arrow-function expression that initialises a const/let/var binding (the binding name is the function's name), a class method, and an object-literal method or property whose value is a function. Constructors, getters/setters, and anonymous inline callbacks (e.g. arguments to .map/.reduce) are not instances. Code inside comments and string/template literals is not code and is not an instance.",
+  "interpretation": "The rule asks that every function's name begin with a verb. The name is split at its first camelCase/PascalCase/underscore word boundary and the first word must be a verb (get, set, is, has, fetch, load, save, create, compute, calculate, validate, render, handle, add, apply, send, parse, generate, write, print, format, stream, etc.; boolean-predicate prefixes is/has/can/should count as verbs). A name whose first word is a noun or adjective (userProfile, priceSummary, cartItems, discountRate, userSettings) violates. A name that merely starts with the letters of a verb but whose first word is a noun (getter, issue, settings) is not verb-initial. Constructors and accessors are excluded because their names are fixed by the language or denote properties; anonymous callbacks have no name and are excluded. The verdict is SATISFIED when the file has at least one governed function and all are verb-initial, VIOLATED when any governed function is not, and NOT_APPLICABLE when the file defines no governed function (types, interfaces and data constants only). Function-like text appearing only inside comments or string/template literals is ignored.",
+  "fixtures": [
+    {
+      "id": "pos_01",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_01.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_02",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "pos_03",
+      "set": "dev",
+      "kind": "positive",
+      "file": "dev/pos_03.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "neg_01",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_01.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_02",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "neg_03",
+      "set": "dev",
+      "kind": "negative",
+      "file": "dev/neg_03.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "inapp_01",
+      "set": "dev",
+      "kind": "inapplicable",
+      "file": "dev/inapp_01.ts",
+      "expected": "NOT_APPLICABLE"
+    },
+    {
+      "id": "adv_01",
+      "set": "dev",
+      "kind": "adversarial",
+      "file": "dev/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^[ \\t]*(?:export[ \\t]+)?(?:default[ \\t]+)?(?:async[ \\t]+)?function\\s*\\*?\\s*(?!(?:get|set|is|has|can|should|create|make|build|fetch|load|save|update|delete|remove|add|handle|render|compute|calculate|validate|check|parse|format|convert|find|send|init|initialize|reset|clear|apply|run|start|stop|show|hide|toggle|use|map|filter|sort|merge|normalize|ensure|register|process|generate|read|write|print|log|emit|dispatch|resolve|transform|stream|on)(?:[A-Z_0-9$]|\\b))[A-Za-z_$][\\w$]*\\s*\\(|\\b(?:const|let|var)\\s+(?!(?:get|set|is|has|can|should|create|make|build|fetch|load|save|update|delete|remove|add|handle|render|compute|calculate|validate|check|parse|format|convert|find|send|init|initialize|reset|clear|apply|run|start|stop|show|hide|toggle|use|map|filter|sort|merge|normalize|ensure|register|process|generate|read|write|print|log|emit|dispatch|resolve|transform|stream|on)(?:[A-Z_0-9$]|\\b))[A-Za-z_$][\\w$]*\\s*=\\s*(?:async\\s+)?(?:function\\b|\\([^)]*\\)\\s*(?::[^=]*)?=>|[A-Za-z_$][\\w$]*\\s*=>)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "h_pos_01",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_01.js",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_pos_02",
+      "set": "heldout",
+      "kind": "positive",
+      "file": "heldout/pos_02.ts",
+      "expected": "SATISFIED"
+    },
+    {
+      "id": "h_neg_01",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_01.js",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_neg_02",
+      "set": "heldout",
+      "kind": "negative",
+      "file": "heldout/neg_02.ts",
+      "expected": "VIOLATED"
+    },
+    {
+      "id": "h_adv_01",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/adv_01.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "^[ \\t]*(?:export[ \\t]+)?(?:default[ \\t]+)?(?:async[ \\t]+)?function\\s*\\*?\\s*(?!(?:get|set|is|has|can|should|create|make|build|fetch|load|save|update|delete|remove|add|handle|render|compute|calculate|validate|check|parse|format|convert|find|send|init|initialize|reset|clear|apply|run|start|stop|show|hide|toggle|use|map|filter|sort|merge|normalize|ensure|register|process|generate|read|write|print|log|emit|dispatch|resolve|transform|stream|on)(?:[A-Z_0-9$]|\\b))[A-Za-z_$][\\w$]*\\s*\\(|\\b(?:const|let|var)\\s+(?!(?:get|set|is|has|can|should|create|make|build|fetch|load|save|update|delete|remove|add|handle|render|compute|calculate|validate|check|parse|format|convert|find|send|init|initialize|reset|clear|apply|run|start|stop|show|hide|toggle|use|map|filter|sort|merge|normalize|ensure|register|process|generate|read|write|print|log|emit|dispatch|resolve|transform|stream|on)(?:[A-Z_0-9$]|\\b))[A-Za-z_$][\\w$]*\\s*=\\s*(?:async\\s+)?(?:function\\b|\\([^)]*\\)\\s*(?::[^=]*)?=>|[A-Za-z_$][\\w$]*\\s*=>)",
+        "match_means": "VIOLATED"
+      }
+    },
+    {
+      "id": "s1_def",
+      "set": "heldout",
+      "kind": "adversarial",
+      "file": "heldout/s1_def.ts",
+      "expected": "SATISFIED",
+      "lower_check": {
+        "check_tier": "T1",
+        "check": "\\bfunction\\s+(?!(?:get|set|load|create|make|build|fetch|handle|is|has)[A-Z])\\w+\\s*\\(",
+        "match_means": "VIOLATED"
+      },
+      "source": "S1 coder's defeating_case (blind, Stage 2)"
+    }
+  ]
+}
