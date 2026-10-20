@@ -56,4 +56,3 @@ python3 harness/analyze.py harness/runs/<model-id>.jsonl --outdir harness/out/
 `run_benchmark.py --stub --out /tmp/stub.jsonl --limit 6 --reps 1` runs the whole scoring pipeline
 on synthetic replies, with no model. `verify_runs.py` and `diagnostics.py` expect the three model
 labels used in the study; edit `MODELS` at the top of each for other models.
-# codiemind-public

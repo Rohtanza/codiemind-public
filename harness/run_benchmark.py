@@ -16,11 +16,11 @@ Simulated clock (one session = one day): before each arm-C trial the harness set
 old and ballast rank j is (j mod 30) days old. The scorer's constants are untouched.
 
 Usage (real run, after the leak test passes — see out/RUNBOOK.md):
-  python3 code/run_benchmark.py --model-label gemini-2.5-flash-001 \
+  python3 harness/run_benchmark.py --model-label gemini-2.5-flash-001 \
       --backend http://127.0.0.1:8000 --data-dir /path/to/.codiemind --out runs/gemini.jsonl
 Dry run of the whole pipeline without any model (synthetic responses from fixture files; the
 output is NOT a result and must never be copied to out/):
-  python3 code/run_benchmark.py --stub --out /tmp/stub.jsonl --limit 6 --sizes 10 120 --reps 1
+  python3 harness/run_benchmark.py --stub --out /tmp/stub.jsonl --limit 6 --sizes 10 120 --reps 1
 Resumable: trials already present in --out are skipped.
 """
 from __future__ import annotations
