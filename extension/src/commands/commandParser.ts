@@ -1,44 +1,31 @@
-import { PreferenceScope } from '../types';
-
 export interface ParsedCommand {
-  type: 'remember' | 'decide' | 'forget' | 'memories' | 'context' | 'chat';
+  type: 'remember' | 'decide' | 'forget' | 'memories' | 'context' | 'help' | 'chat';
   text: string;
-  scope?: PreferenceScope;
   rationale?: string;
 }
 
-const IMPLICIT_SIGNALS = [
-  "i always prefer", "i always want", "i never want",
-  "in this project, use", "in this project, always",
-  "do not use", "never use", "avoid using",
-  "make sure to", "always make sure",
-  "the convention here is", "we follow", "our standard is",
-  "from now on", "going forward"
+/** Commands shown in the chat's @ menu, in display order. */
+export const COMMANDS = [
+  { name: '@remember', args: '<preference>', description: 'Store a coding preference' },
+  { name: '@decide', args: '<decision> because <reason>', description: 'Record a project decision' },
+  { name: '@forget', args: '<keyword>', description: 'Remove a stored memory' },
+  { name: '@memories', args: '', description: 'List stored memories' },
+  { name: '@context', args: '', description: 'Show how the last prompt was assembled' },
+  { name: '@help', args: '', description: 'Show what CodieMind can do' },
 ];
+
+function startsWithCommand(text: string, cmd: string): boolean {
+  return text === cmd || text.startsWith(cmd + ' ') || text.startsWith(cmd + '\n');
+}
 
 export function parseCommand(input: string): ParsedCommand {
   const trimmed = input.trim();
 
-  if (trimmed.startsWith('@remember')) {
-    const rest = trimmed.slice('@remember'.length).trim();
-    let scope: PreferenceScope = 'project';
-    let text = rest;
-
-    if (rest.startsWith('--file ')) {
-      scope = 'file';
-      text = rest.slice('--file '.length).trim();
-    } else if (rest.startsWith('--folder ')) {
-      scope = 'folder';
-      text = rest.slice('--folder '.length).trim();
-    } else if (rest.startsWith('--global ')) {
-      scope = 'global';
-      text = rest.slice('--global '.length).trim();
-    }
-
-    return { type: 'remember', text, scope };
+  if (startsWithCommand(trimmed, '@remember')) {
+    return { type: 'remember', text: trimmed.slice('@remember'.length).trim() };
   }
 
-  if (trimmed.startsWith('@decide')) {
+  if (startsWithCommand(trimmed, '@decide')) {
     const rest = trimmed.slice('@decide'.length).trim();
     const becauseIndex = rest.toLowerCase().indexOf(' because ');
     if (becauseIndex !== -1) {
@@ -51,23 +38,34 @@ export function parseCommand(input: string): ParsedCommand {
     return { type: 'decide', text: rest };
   }
 
-  if (trimmed.startsWith('@forget')) {
-    const rest = trimmed.slice('@forget'.length).trim();
-    return { type: 'forget', text: rest };
+  if (startsWithCommand(trimmed, '@forget')) {
+    return { type: 'forget', text: trimmed.slice('@forget'.length).trim() };
   }
 
-  if (trimmed.startsWith('@memories')) {
+  if (startsWithCommand(trimmed, '@memories')) {
     return { type: 'memories', text: trimmed };
   }
 
-  if (trimmed.startsWith('@context')) {
+  if (startsWithCommand(trimmed, '@context')) {
     return { type: 'context', text: trimmed };
+  }
+
+  if (startsWithCommand(trimmed, '@help')) {
+    return { type: 'help', text: trimmed };
   }
 
   return { type: 'chat', text: trimmed };
 }
 
-export function detectImplicitPreference(input: string): boolean {
-  const lower = input.toLowerCase();
-  return IMPLICIT_SIGNALS.some(signal => lower.includes(signal));
+/**
+ * Label an explicitly stated preference with a category for display and filtering.
+ * Keyword heuristic only. The category does not enter the retrieval score.
+ */
+export function guessCategory(text: string): 'style' | 'naming' | 'tool' | 'architecture' | 'constraint' {
+  const t = text.toLowerCase();
+  if (/\b(name|names|naming|camelcase|snake_case|pascalcase|kebab|prefix|suffix)\b/.test(t)) { return 'naming'; }
+  if (/\b(architecture|layer|layers|module|modules|folder|folders|directory|service|services|pattern|structure)\b/.test(t)) { return 'architecture'; }
+  if (/\b(library|libraries|package|framework|axios|fetch|lodash|jest|vitest|pytest|npm|yarn|pnpm|eslint|prettier|tool)\b/.test(t)) { return 'tool'; }
+  if (/\b(never|must|do not|don't|avoid|forbid|forbidden|no)\b/.test(t)) { return 'constraint'; }
+  return 'style';
 }

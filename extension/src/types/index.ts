@@ -1,83 +1,45 @@
-// ── Preference & Decision ──────────────────────────────────
+// Shapes passed from the extension host to the webviews. Field names are camelCase on this side
+// of the boundary; the API client keeps the backend's snake_case.
 
-export type PreferenceCategory = "style" | "architecture" | "naming" | "tool" | "constraint";
-export type PreferenceScope = "file" | "folder" | "project" | "global";
-export type PreferenceSource = "explicit" | "implicit";
+export type MemoryKind = 'preference' | 'decision';
 
-export interface Preference {
+export interface MemoryItem {
   id: string;
-  content: string;
-  category: PreferenceCategory;
-  scopeType: PreferenceScope;
-  scopePath: string | null;
-  importance: number;
-  source: PreferenceSource;
-  createdAt: string;
-  updatedAt: string;
-  accessCount: number;
-}
-
-export interface Decision {
-  id: string;
+  kind: MemoryKind;
   content: string;
   rationale: string | null;
-  scopeType: PreferenceScope;
-  scopePath: string | null;
+  category: string;
+  scopeType: string;
   importance: number;
+  source: string;
   createdAt: string;
-  updatedAt: string;
 }
 
-// ── Chat Messages ──────────────────────────────────────────
-
-export type MessageType = "user" | "assistant" | "system" | "confirmation" | "memories" | "context";
-
-export interface AppliedPreference {
-  content: string;
-  category: PreferenceCategory;
+/** A memory that was retrieved into the prompt; `cited` is true when the reply cites its id. */
+export interface UsedMemory extends MemoryItem {
+  cited: boolean;
 }
-
-export interface ChatMessage {
-  id: string;
-  type: MessageType;
-  text: string;
-  timestamp: string;
-  appliedPreferences?: AppliedPreference[];
-  detectedPreference?: string;
-  suggestedCategory?: PreferenceCategory;
-  suggestedScope?: PreferenceScope;
-  memories?: Preference[];
-  contextSlots?: ContextSlot[];
-}
-
-// ── Context Assembly ───────────────────────────────────────
 
 export interface ContextSlot {
-  slot: number;
   name: string;
   tokens: number;
   content: string;
 }
 
-export interface ContextBreakdown {
-  slots: ContextSlot[];
+export interface ContextView {
+  query: string;
+  assembledAt: string;
   totalTokens: number;
-  budgetLimit: number;
+  budget: number;
+  slots: ContextSlot[];
 }
 
-// ── Mock Backend Response ──────────────────────────────────
-
-export interface MockResponse {
-  type: MessageType;
-  text: string;
-  appliedPreferences?: AppliedPreference[];
-  detectedPreference?: string;
-  suggestedCategory?: PreferenceCategory;
-  suggestedScope?: PreferenceScope;
-  memories?: Preference[];
-  contextSlots?: ContextSlot[];
-  totalTokens?: number;
-  budgetLimit?: number;
-  storedPreference?: Partial<Preference>;
-  storedDecision?: Partial<Decision>;
-}
+export type ChatMessage =
+  | { id: string; role: 'user'; text: string; timestamp: string }
+  | { id: string; role: 'assistant'; text: string; timestamp: string; usedMemories: UsedMemory[] }
+  | { id: string; role: 'event'; kind: 'remembered' | 'decided' | 'forgotten'; item: MemoryItem; timestamp: string }
+  | { id: string; role: 'memories'; items: MemoryItem[]; timestamp: string }
+  | { id: string; role: 'context'; context: ContextView; timestamp: string }
+  | { id: string; role: 'help'; timestamp: string }
+  | { id: string; role: 'notice'; tone: 'info' | 'warning'; text: string; timestamp: string }
+  | { id: string; role: 'error'; title: string; detail: string; retryText: string | null; offline: boolean; timestamp: string };

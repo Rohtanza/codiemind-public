@@ -4,7 +4,12 @@ function getBaseUrl(): string {
   return vscode.workspace.getConfiguration('codiemind').get<string>('backendUrl', 'http://localhost:8000');
 }
 
-class BackendError extends Error {
+export function backendUrl(): string {
+  return getBaseUrl();
+}
+
+/** status 0 means the backend could not be reached at all. */
+export class BackendError extends Error {
   constructor(public status: number, public detail: string) {
     super(detail);
     this.name = 'BackendError';
@@ -21,7 +26,12 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     options.body = JSON.stringify(body);
   }
 
-  const resp = await fetch(url, options);
+  let resp: Response;
+  try {
+    resp = await fetch(url, options);
+  } catch {
+    throw new BackendError(0, `Cannot reach the CodieMind backend at ${getBaseUrl()}`);
+  }
   if (!resp.ok) {
     let detail = `HTTP ${resp.status}`;
     try {
@@ -141,6 +151,7 @@ export async function listMemories(scope: string = 'project'): Promise<ListMemor
 export async function chat(req: {
   query: string;
   file_path?: string;
+  session_id?: string;
 }): Promise<ChatResponse> {
   return request<ChatResponse>('POST', '/chat', req);
 }

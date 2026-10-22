@@ -1,14 +1,17 @@
 {
   "name": "codiemind",
   "displayName": "CodieMind",
-  "description": "A preference-aware coding assistant with persistent memory",
-  "version": "0.1.0",
+  "description": "A coding assistant that remembers your preferences and decisions across sessions",
+  "version": "0.2.0",
+  "publisher": "codiemind",
+  "icon": "media/icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["Other"],
+  "categories": ["AI", "Programming Languages", "Other"],
   "activationEvents": [
-    "onView:codiemind.chatPanel"
+    "onView:codiemind.chatPanel",
+    "onView:codiemind.memoryPanel"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -35,6 +38,64 @@
         }
       ]
     },
+    "commands": [
+      {
+        "command": "codiemind.newChat",
+        "title": "New Chat",
+        "category": "CodieMind",
+        "icon": "$(add)"
+      },
+      {
+        "command": "codiemind.askAboutSelection",
+        "title": "Ask CodieMind About Selection",
+        "category": "CodieMind",
+        "icon": "$(comment-discussion)"
+      },
+      {
+        "command": "codiemind.refreshMemories",
+        "title": "Refresh Memories",
+        "category": "CodieMind",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "codiemind.openMemories",
+        "title": "Show Memories",
+        "category": "CodieMind",
+        "icon": "$(database)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "codiemind.newChat",
+          "when": "view == codiemind.chatPanel",
+          "group": "navigation@1"
+        },
+        {
+          "command": "codiemind.openMemories",
+          "when": "view == codiemind.chatPanel",
+          "group": "navigation@2"
+        },
+        {
+          "command": "codiemind.refreshMemories",
+          "when": "view == codiemind.memoryPanel",
+          "group": "navigation@1"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "codiemind.askAboutSelection",
+          "when": "editorHasSelection",
+          "group": "codiemind@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "codiemind.askAboutSelection",
+          "when": "editorHasSelection"
+        }
+      ]
+    },
     "configuration": {
       "title": "CodieMind",
       "properties": {
@@ -44,17 +105,19 @@
           "description": "CodieMind backend URL"
         }
       }
-    },
-    "commands": []
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "vendor": "node -e \"const f=require('fs');f.mkdirSync('media/vendor',{recursive:true});f.copyFileSync('node_modules/@highlightjs/cdn-assets/highlight.min.js','media/vendor/highlight.min.js');f.copyFileSync('node_modules/@vscode/codicons/dist/codicon.css','media/vendor/codicon.css');f.copyFileSync('node_modules/@vscode/codicons/dist/codicon.ttf','media/vendor/codicon.ttf')\""
   },
   "devDependencies": {
-    "@types/vscode": "^1.85.0",
+    "@highlightjs/cdn-assets": "^11.10.0",
     "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/codicons": "^0.0.36",
     "typescript": "^5.3.0"
   }
 }
