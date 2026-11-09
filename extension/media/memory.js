@@ -18,8 +18,14 @@
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  // The backend stores UTC times without a zone suffix; read them as UTC, not local time.
+  function parseTime(iso) {
+    const s = String(iso || '');
+    return new Date(/([zZ]|[+-]\d\d:?\d\d)$/.test(s) ? s : s + 'Z');
+  }
+
   function ago(iso) {
-    const t = new Date(iso).getTime();
+    const t = parseTime(iso).getTime();
     if (!t) return '';
     const s = Math.max(0, (Date.now() - t) / 1000);
     if (s < 60) return 'just now';
@@ -80,7 +86,7 @@
       + (i.rationale && i.rationale !== i.content ? '<div class="mem-rationale"><span>Because</span> ' + esc(i.rationale) + '</div>' : '')
       + '<div class="mem-meta"><span class="chip cat-' + esc(i.category) + '">' + esc(i.category) + '</span>'
       + '<span class="importance" title="Importance ' + v + ' of 10"><span class="bar"><i style="width:' + v * 10 + '%"></i></span>' + v + '/10</span>'
-      + '<span class="ago" title="' + esc(new Date(i.createdAt).toLocaleString()) + '">' + ago(i.createdAt) + '</span></div>'
+      + '<span class="ago" title="' + esc(parseTime(i.createdAt).toLocaleString()) + '">' + ago(i.createdAt) + '</span></div>'
       + '<div class="confirm" hidden><span>Delete this memory?</span>'
       + '<button class="btn danger" data-action="confirm-delete" data-id="' + esc(i.id) + '">Delete</button>'
       + '<button class="btn secondary" data-action="cancel-delete">Cancel</button></div>'

@@ -256,21 +256,25 @@ export class ChatPanelProvider implements vscode.WebviewViewProvider {
       styles: ['chat.css'],
       scripts: ['vendor/highlight.min.js', 'markdown.js', 'chat.js'],
       body: `
-  <header class="topbar">
-    <div class="brand"><img class="brand-mark" src="{{media}}codiemind-mark.svg" alt=""><span>CodieMind</span></div>
-    <button class="status-pill" id="status" title="Backend status" aria-live="polite">
-      <span class="dot"></span><span class="label">Connecting</span>
-    </button>
-  </header>
   <main class="messages" id="messages" aria-live="polite"></main>
   <footer class="composer-wrap">
     <div class="command-menu" id="command-menu" role="listbox" hidden></div>
+    <div class="quick" id="quick" role="toolbar" aria-label="Quick actions" hidden>
+      <button class="quick-chip" data-cmd="@remember "><span class="codicon codicon-bookmark"></span>Remember</button>
+      <button class="quick-chip" data-cmd="@decide "><span class="codicon codicon-law"></span>Decide</button>
+      <button class="quick-chip" data-cmd="@memories"><span class="codicon codicon-database"></span>Memories</button>
+      <button class="quick-chip" data-cmd="@context"><span class="codicon codicon-layers"></span>Last prompt</button>
+      <button class="quick-chip" data-cmd="@help"><span class="codicon codicon-question"></span>Help</button>
+    </div>
     <div class="composer" id="composer">
       <textarea id="input" rows="1" placeholder="Ask CodieMind, or type @ for commands" aria-label="Message"></textarea>
       <div class="composer-bar">
         <button class="icon-btn" id="at-btn" title="Commands (@)" aria-label="Show commands"><span class="codicon codicon-mention"></span></button>
-        <span class="hint">Enter to send · Shift+Enter for a new line</span>
-        <button class="send-btn" id="send" title="Send (Enter)" aria-label="Send" disabled><span class="codicon codicon-send"></span></button>
+        <button class="status-pill" id="status" title="Backend status" aria-live="polite">
+          <span class="dot"></span><span class="label">Connecting</span>
+        </button>
+        <span class="spacer"></span>
+        <button class="send-btn" id="send" title="Send (Enter) · Shift+Enter for a new line" aria-label="Send" disabled><span class="codicon codicon-send"></span></button>
       </div>
     </div>
   </footer>`,

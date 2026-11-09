@@ -73,7 +73,7 @@ export function webviewHtml(
   ${links}
 </head>
 <body>
-  ${opts.body.replace(/\{\{media\}\}/g, uri(''))}
+  ${opts.body.replace(/\{\{media\}\}/g, uri('').replace(/\/?$/, '/'))}
   ${scripts}
 </body>
 </html>`;

@@ -6,24 +6,15 @@ body {
   background: var(--vscode-sideBar-background);
 }
 
-/* ── Top bar ─────────────────────────────────────────────── */
-.topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--cm-border);
-  flex-shrink: 0;
-}
-.brand { display: flex; align-items: center; gap: 7px; font-weight: 600; letter-spacing: 0.1px; }
-.brand-mark { width: 16px; height: 16px; }
+/* ── Status pill (in the composer bar) ─────────────────── */
 .status-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  max-width: 60%;
-  padding: 2px 9px 2px 8px;
+  min-width: 0;
+  max-width: 70%;
+  height: 22px;
+  padding: 0 9px 0 8px;
   border: 1px solid var(--cm-border);
   border-radius: 11px;
   background: transparent;
@@ -313,10 +304,17 @@ body {
 @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
 
 /* Welcome */
-.welcome { padding: 28px 16px 12px; text-align: center; }
+.welcome { padding: 24px 16px 12px; text-align: center; }
+@media (min-width: 520px) { .starters { grid-template-columns: 1fr 1fr; } }
+@media (max-height: 560px) {
+  .welcome { padding-top: 12px; }
+  .welcome-mark { width: 30px; height: 30px; margin-bottom: 6px; }
+  .welcome .lead { margin-bottom: 10px; }
+  .welcome .foot { display: none; }
+}
 .welcome-mark { width: 44px; height: 44px; margin: 0 auto 10px; }
 .welcome h1 { margin: 0 0 6px; font-size: 18px; font-weight: 600; }
-.welcome .lead { margin: 0 auto 18px; max-width: 320px; color: var(--cm-muted); font-size: 12.5px; }
+.welcome .lead { margin: 0 auto 18px; max-width: 380px; color: var(--cm-muted); font-size: 12.5px; }
 .welcome .notice { text-align: left; margin: 0 0 14px; }
 .starters { display: grid; gap: 8px; text-align: left; }
 .starter {
@@ -364,7 +362,26 @@ body {
 .composer textarea::placeholder { color: var(--vscode-input-placeholderForeground); }
 .composer textarea:focus-visible { outline: none; }
 .composer-bar { display: flex; align-items: center; gap: 6px; padding: 2px 6px 6px; }
-.composer-bar .hint { flex: 1; font-size: 10.5px; color: var(--cm-muted); opacity: 0.8; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.composer-bar .spacer { flex: 1; }
+
+.quick { display: flex; gap: 6px; overflow-x: auto; padding: 0 0 7px; scrollbar-width: none; }
+.quick::-webkit-scrollbar { display: none; }
+.quick[hidden] { display: none; }
+.quick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  height: 24px;
+  padding: 0 10px 0 8px;
+  border: 1px solid var(--cm-border);
+  border-radius: 12px;
+  background: var(--cm-card);
+  font-size: 11.5px;
+  color: var(--vscode-foreground);
+}
+.quick-chip .codicon { font-size: 12px; color: var(--cm-accent); }
+.quick-chip:hover { border-color: var(--cm-accent-line); background: var(--cm-accent-soft); }
 .send-btn {
   display: inline-flex;
   align-items: center;

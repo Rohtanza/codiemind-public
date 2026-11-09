@@ -26,7 +26,11 @@
 
   function inline(text) {
     const codes = [];
-    let s = escapeHtml(text).replace(/`([^`]+)`/g, (_, c) => {
+    // A fence written inside a line (```ts code```) is shown as inline code, not as stray backticks.
+    let s = escapeHtml(text).replace(/```[ \t]*(?:[\w+#.-]+[ \t]+)?([^`]+?)[ \t]*```/g, (_, c) => {
+      codes.push(c);
+      return '\u0000' + (codes.length - 1) + '\u0000';
+    }).replace(/`([^`]+)`/g, (_, c) => {
       codes.push(c);
       return '\u0000' + (codes.length - 1) + '\u0000';
     });

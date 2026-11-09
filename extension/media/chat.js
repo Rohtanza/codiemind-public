@@ -13,6 +13,7 @@
   const atBtn = document.getElementById('at-btn');
   const menuEl = document.getElementById('command-menu');
   const statusEl = document.getElementById('status');
+  const quickEl = document.getElementById('quick');
 
   const saved = vscode.getState() || {};
   let messages = Array.isArray(saved.messages) ? saved.messages : [];
@@ -48,7 +49,13 @@
       for (const m of messages) messagesEl.appendChild(renderMessage(m));
     }
     if (thinking) messagesEl.appendChild(thinkingEl(thinkingLabel));
-    scrollToEnd();
+    if (messages.length === 0) messagesEl.scrollTop = 0; else scrollToEnd();
+    updateQuick();
+  }
+
+  // Quick actions stay available once the welcome cards are gone.
+  function updateQuick() {
+    quickEl.hidden = messages.length === 0 || !menuEl.hidden;
   }
 
   function append(m) {
@@ -58,6 +65,7 @@
     const el = renderMessage(m);
     if (t) messagesEl.insertBefore(el, t); else messagesEl.appendChild(el);
     scrollToEnd();
+    updateQuick();
   }
 
   function scrollToEnd() {
@@ -278,9 +286,10 @@
       + '"><span class="cmd-name">' + esc(c.name) + '</span><span class="cmd-args">' + esc(c.args)
       + '</span><span class="cmd-desc">' + esc(c.description) + '</span></div>').join('');
     menuEl.hidden = false;
+    updateQuick();
   }
 
-  function hideMenu() { menuEl.hidden = true; menuIndex = 0; }
+  function hideMenu() { menuEl.hidden = true; menuIndex = 0; updateQuick(); }
 
   function pickCommand(i) {
     const c = menuItems[i];
@@ -330,6 +339,20 @@
     updateSend();
   });
   statusEl.addEventListener('click', () => vscode.postMessage({ type: 'checkConnection' }));
+  quickEl.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-cmd]');
+    if (!b || thinking) return;
+    const cmd = b.dataset.cmd;
+    if (cmd.endsWith(' ')) {
+      inputEl.value = cmd;
+      inputEl.focus();
+      inputEl.setSelectionRange(cmd.length, cmd.length);
+      autosize();
+      updateSend();
+    } else {
+      send(cmd);
+    }
+  });
 
   // ── Delegated clicks inside messages ──────────────────────
   messagesEl.addEventListener('click', (e) => {
