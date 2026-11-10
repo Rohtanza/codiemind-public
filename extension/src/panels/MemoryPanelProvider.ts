@@ -38,6 +38,9 @@ export class MemoryPanelProvider implements vscode.WebviewViewProvider {
           }
           await this._memory.refresh(false);
           break;
+        case 'edit':
+          await this._edit(data);
+          break;
         case 'copy':
           await vscode.env.clipboard.writeText(String(data.text ?? ''));
           vscode.window.setStatusBarMessage('$(check) Memory copied', 2000);
@@ -50,6 +53,50 @@ export class MemoryPanelProvider implements vscode.WebviewViewProvider {
           break;
       }
     });
+  }
+
+  /**
+   * Edit a stored memory. The evaluated backend has no update endpoint and is left unchanged, so an
+   * edit stores the new version first and then deletes the old one. If storing fails, nothing is
+   * deleted. The edited memory gets a new id and a fresh created_at, so it counts as new for recency.
+   */
+  private async _edit(data: { id?: unknown; content?: unknown; rationale?: unknown; importance?: unknown; category?: unknown }): Promise<void> {
+    const reply = (ok: boolean, error?: string) =>
+      void this._view?.webview.postMessage({ type: 'editResult', ok, error });
+    const old = this._memory.find(String(data.id));
+    const content = String(data.content ?? '').trim();
+    const importance = Number(data.importance);
+    if (!old) { reply(false, 'This memory no longer exists. Refresh the list.'); return; }
+    if (!content || !Number.isInteger(importance) || importance < 1 || importance > 10) {
+      reply(false, 'Invalid text or importance.');
+      return;
+    }
+    let newId: string;
+    try {
+      if (old.kind === 'decision') {
+        const rationale = String(data.rationale ?? '').trim();
+        if (!rationale) { reply(false, 'A decision needs a reason.'); return; }
+        newId = (await api.decide({ content, rationale, scope_type: old.scopeType, importance })).id;
+      } else {
+        newId = (await api.remember({
+          content, importance, scope_type: old.scopeType, source: old.source,
+          category: String(data.category ?? old.category),
+        })).id;
+      }
+    } catch (err) {
+      reply(false, `Could not save the change, the memory is unchanged. ${err instanceof Error ? err.message : err}`);
+      return;
+    }
+    try {
+      await api.forget(old.id);
+    } catch (err) {
+      vscode.window.showWarningMessage(
+        `CodieMind: the edited memory was saved, but the old version could not be deleted. Delete it by hand. ${err instanceof Error ? err.message : err}`);
+    }
+    this._highlightId = newId;
+    await this._memory.refresh(false);
+    reply(true);
+    vscode.window.setStatusBarMessage('$(check) Memory updated', 2000);
   }
 
   /** Reveal the panel and briefly highlight one memory (used by the chips under a reply). */

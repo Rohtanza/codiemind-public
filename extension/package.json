@@ -2,7 +2,7 @@
   "name": "codiemind",
   "displayName": "CodieMind",
   "description": "A coding assistant that remembers your preferences and decisions across sessions",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "publisher": "codiemind",
   "icon": "media/icon.png",
   "engines": {
