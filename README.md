@@ -28,6 +28,8 @@ cd extension && npm install && npm run compile     # then press F5 in VS Code
 ```
 In the chat panel: `@remember <preference>`, `@decide <decision> because <reason>`, `@memories`,
 `@forget <id>`, `@context`; anything else is a code request.
+The Memories panel lists stored preferences and decisions with search, inline edit (saved as a new
+memory, so its recency resets) and delete.
 
 ## Checking the instrument
 
